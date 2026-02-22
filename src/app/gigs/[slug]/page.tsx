@@ -61,7 +61,7 @@ export default async function GigPage({ params }: { params: Promise<{ slug: stri
       {gig.tags.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {gig.tags.map(({ tag }) => (
-            <span key={tag.name} className="rounded-full bg-zinc-100 px-3 py-1 text-xs text-zinc-600">
+            <span key={tag.name} className="rounded-full bg-violet-100 px-3 py-1 text-xs text-violet-700">
               {tag.label}
             </span>
           ))}

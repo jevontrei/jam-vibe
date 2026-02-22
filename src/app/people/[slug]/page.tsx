@@ -10,6 +10,7 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
     where: { slug },
     include: {
       instruments: { include: { instrument: true } },
+      tags: { include: { tag: true } },
       projectMembers: {
         include: {
           project: {
@@ -60,6 +61,14 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
         <p className="mt-1 text-sm text-zinc-500">
           {person.instruments.map(i => i.instrument.name).join(", ")}
         </p>
+      )}
+
+      {person.tags.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {person.tags.map(({ tag }) => (
+            <span key={tag.name} className="rounded-full bg-violet-100 px-3 py-1 text-xs text-violet-700">{tag.label}</span>
+          ))}
+        </div>
       )}
 
       {person.bio && (

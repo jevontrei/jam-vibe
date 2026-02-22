@@ -82,6 +82,21 @@ async function main() {
     { name: "free-entry", label: "Free entry" },
     { name: "bar", label: "Bar" },
     { name: "outdoor", label: "Outdoor" },
+    { name: "latin", label: "Latin" },
+    { name: "funk", label: "Funk" },
+    { name: "soul", label: "Soul" },
+    { name: "experimental", label: "Experimental" },
+    { name: "improvised", label: "Improvised" },
+    { name: "late-night", label: "Late night" },
+    { name: "residency", label: "Residency" },
+    { name: "original-music", label: "Original music" },
+    { name: "standards", label: "Standards" },
+    { name: "intimate-venue", label: "Intimate venue" },
+    { name: "licensed", label: "Licensed" },
+    { name: "seated", label: "Seated" },
+    { name: "standing", label: "Standing" },
+    { name: "afrobeat", label: "Afrobeat" },
+    { name: "fusion", label: "Fusion" },
   ];
   const tags = await Promise.all(
     tagDefs.map((t) =>
@@ -526,6 +541,120 @@ async function main() {
     skipDuplicates: true,
   });
 
+  // ── Venue tags ────────────────────────────────────────────────────────────
+  await prisma.venueTag.createMany({
+    data: [
+      { venueId: triffid.id, tagId: tagMap["licensed"].id },
+      { venueId: triffid.id, tagId: tagMap["standing"].id },
+      { venueId: triffid.id, tagId: tagMap["all-ages"].id },
+      { venueId: triffid.id, tagId: tagMap["modern-jazz"].id },
+      { venueId: mirrorball.id, tagId: tagMap["late-night"].id },
+      { venueId: mirrorball.id, tagId: tagMap["intimate-venue"].id },
+      { venueId: mirrorball.id, tagId: tagMap["licensed"].id },
+      { venueId: mirrorball.id, tagId: tagMap["experimental"].id },
+      { venueId: mirrorball.id, tagId: tagMap["sit-in-welcome"].id },
+      { venueId: bjc.id, tagId: tagMap["trad-jazz"].id },
+      { venueId: bjc.id, tagId: tagMap["seated"].id },
+      { venueId: bjc.id, tagId: tagMap["licensed"].id },
+      { venueId: bjc.id, tagId: tagMap["standards"].id },
+      { venueId: joynt.id, tagId: tagMap["free-entry"].id },
+      { venueId: joynt.id, tagId: tagMap["intimate-venue"].id },
+      { venueId: joynt.id, tagId: tagMap["bar"].id },
+      { venueId: joynt.id, tagId: tagMap["all-ages"].id },
+      { venueId: joynt.id, tagId: tagMap["nu-jazz"].id },
+    ],
+    skipDuplicates: true,
+  });
+
+  // ── Project tags ───────────────────────────────────────────────────────────
+  await prisma.projectTag.createMany({
+    data: [
+      { projectId: rumblePack.id, tagId: tagMap["free-jazz"].id },
+      { projectId: rumblePack.id, tagId: tagMap["experimental"].id },
+      { projectId: rumblePack.id, tagId: tagMap["improvised"].id },
+      { projectId: rumblePack.id, tagId: tagMap["instrumental"].id },
+      { projectId: melodyQuartet.id, tagId: tagMap["modern-jazz"].id },
+      { projectId: melodyQuartet.id, tagId: tagMap["vocal"].id },
+      { projectId: melodyQuartet.id, tagId: tagMap["standards"].id },
+      { projectId: melodyQuartet.id, tagId: tagMap["hard-bop"].id },
+      { projectId: obscureOrch.id, tagId: tagMap["big-band"].id },
+      { projectId: obscureOrch.id, tagId: tagMap["experimental"].id },
+      { projectId: obscureOrch.id, tagId: tagMap["original-music"].id },
+      { projectId: obscureOrch.id, tagId: tagMap["improvised"].id },
+      { projectId: obscureOrch.id, tagId: tagMap["fusion"].id },
+      { projectId: liveAtLivs.id, tagId: tagMap["sit-in-welcome"].id },
+      { projectId: liveAtLivs.id, tagId: tagMap["modern-jazz"].id },
+      { projectId: liveAtLivs.id, tagId: tagMap["free-entry"].id },
+      { projectId: liveAtLivs.id, tagId: tagMap["late-night"].id },
+    ],
+    skipDuplicates: true,
+  });
+
+  // ── People tags ────────────────────────────────────────────────────────────
+  await prisma.personTag.createMany({
+    data: [
+      { personId: liv.id, tagId: tagMap["modern-jazz"].id },
+      { personId: liv.id, tagId: tagMap["sit-in-welcome"].id },
+      { personId: liv.id, tagId: tagMap["original-music"].id },
+      { personId: melody.id, tagId: tagMap["vocal"].id },
+      { personId: melody.id, tagId: tagMap["standards"].id },
+      { personId: melody.id, tagId: tagMap["hard-bop"].id },
+      { personId: jordy.id, tagId: tagMap["nu-jazz"].id },
+      { personId: jordy.id, tagId: tagMap["experimental"].id },
+      { personId: jordy.id, tagId: tagMap["fusion"].id },
+      { personId: joel.id, tagId: tagMap["improvised"].id },
+      { personId: joel.id, tagId: tagMap["free-jazz"].id },
+      { personId: joel.id, tagId: tagMap["experimental"].id },
+    ],
+    skipDuplicates: true,
+  });
+
+  // ── Gig tags (add more to existing gigs) ──────────────────────────────────
+  await prisma.gigTag.createMany({
+    data: [
+      { gigId: gig1.id, tagId: tagMap["late-night"].id },
+      { gigId: gig1.id, tagId: tagMap["standing"].id },
+      { gigId: gig1.id, tagId: tagMap["licensed"].id },
+      { gigId: gig2.id, tagId: tagMap["late-night"].id },
+      { gigId: gig2.id, tagId: tagMap["modern-jazz"].id },
+      { gigId: gig2.id, tagId: tagMap["intimate-venue"].id },
+      { gigId: gig3.id, tagId: tagMap["seated"].id },
+      { gigId: gig3.id, tagId: tagMap["licensed"].id },
+      { gigId: gig3.id, tagId: tagMap["standards"].id },
+      { gigId: gig4.id, tagId: tagMap["standing"].id },
+      { gigId: gig4.id, tagId: tagMap["original-music"].id },
+      { gigId: gig4.id, tagId: tagMap["licensed"].id },
+      { gigId: gig5.id, tagId: tagMap["outdoor"].id },
+      { gigId: gig5.id, tagId: tagMap["student-friendly"].id },
+      { gigId: gig5.id, tagId: tagMap["improvised"].id },
+      { gigId: gig6.id, tagId: tagMap["late-night"].id },
+      { gigId: gig6.id, tagId: tagMap["modern-jazz"].id },
+      { gigId: gig6.id, tagId: tagMap["intimate-venue"].id },
+    ],
+    skipDuplicates: true,
+  });
+
+  // ── Org tags ───────────────────────────────────────────────────────────────
+  const jmiOrg = await prisma.organisation.findUnique({ where: { slug: "jmi" } });
+  const qcguOrg = await prisma.organisation.findUnique({ where: { slug: "qcgu" } });
+  const zzzOrg = await prisma.organisation.findUnique({ where: { slug: "4zzz" } });
+  if (jmiOrg && qcguOrg && zzzOrg) {
+    await prisma.orgTag.createMany({
+      data: [
+        { orgId: jmiOrg.id, tagId: tagMap["modern-jazz"].id },
+        { orgId: jmiOrg.id, tagId: tagMap["student-friendly"].id },
+        { orgId: jmiOrg.id, tagId: tagMap["original-music"].id },
+        { orgId: qcguOrg.id, tagId: tagMap["student-friendly"].id },
+        { orgId: qcguOrg.id, tagId: tagMap["trad-jazz"].id },
+        { orgId: qcguOrg.id, tagId: tagMap["instrumental"].id },
+        { orgId: zzzOrg.id, tagId: tagMap["all-ages"].id },
+        { orgId: zzzOrg.id, tagId: tagMap["free-entry"].id },
+        { orgId: zzzOrg.id, tagId: tagMap["nu-jazz"].id },
+      ],
+      skipDuplicates: true,
+    });
+  }
+
   // ── Extra venues ──────────────────────────────────────────────────────────
   const burrow = await prisma.venue.upsert({
     where: { slug: "the-burrow" },
@@ -606,7 +735,7 @@ async function main() {
   });
 
   // ── Extra residencies ──────────────────────────────────────────────────────
-  await prisma.residency.upsert({
+  const cutTime = await prisma.residency.upsert({
     where: { slug: "cut-time-burrow" },
     update: {},
     create: {
@@ -621,7 +750,7 @@ async function main() {
     },
   });
 
-  await prisma.residency.upsert({
+  const elRitmo = await prisma.residency.upsert({
     where: { slug: "el-ritmo-fridays" },
     update: {},
     create: {
@@ -635,7 +764,7 @@ async function main() {
     },
   });
 
-  await prisma.residency.upsert({
+  const mrVain = await prisma.residency.upsert({
     where: { slug: "mr-vain" },
     update: {},
     create: {
@@ -649,7 +778,7 @@ async function main() {
     },
   });
 
-  await prisma.residency.upsert({
+  const emporiumSats = await prisma.residency.upsert({
     where: { slug: "emporium-saturdays" },
     update: {},
     create: {
@@ -664,7 +793,7 @@ async function main() {
     },
   });
 
-  await prisma.residency.upsert({
+  const andrewShaw = await prisma.residency.upsert({
     where: { slug: "andrew-shaw-hyatt" },
     update: {},
     create: {
@@ -679,7 +808,7 @@ async function main() {
     },
   });
 
-  await prisma.residency.upsert({
+  const jmiLive = await prisma.residency.upsert({
     where: { slug: "jmi-live-thursdays" },
     update: {},
     create: {
@@ -694,7 +823,7 @@ async function main() {
     },
   });
 
-  await prisma.residency.upsert({
+  const deathCo = await prisma.residency.upsert({
     where: { slug: "death-and-co-wednesdays" },
     update: {},
     create: {
@@ -709,7 +838,7 @@ async function main() {
     },
   });
 
-  await prisma.residency.upsert({
+  const alligatorRes = await prisma.residency.upsert({
     where: { slug: "alligator-club-thursdays" },
     update: {},
     create: {
@@ -722,6 +851,29 @@ async function main() {
       venueId: alligator.id,
       createdById: admin.id,
     },
+  });
+
+  // ── Extra residency tags ──────────────────────────────────────────────────
+  await prisma.residencyTag.createMany({
+    data: [
+      { residencyId: cutTime.id, tagId: tagMap["modern-jazz"].id },
+      { residencyId: cutTime.id, tagId: tagMap["sit-in-welcome"].id },
+      { residencyId: elRitmo.id, tagId: tagMap["latin"].id },
+      { residencyId: elRitmo.id, tagId: tagMap["late-night"].id },
+      { residencyId: mrVain.id, tagId: tagMap["funk"].id },
+      { residencyId: mrVain.id, tagId: tagMap["soul"].id },
+      { residencyId: emporiumSats.id, tagId: tagMap["modern-jazz"].id },
+      { residencyId: emporiumSats.id, tagId: tagMap["licensed"].id },
+      { residencyId: andrewShaw.id, tagId: tagMap["trad-jazz"].id },
+      { residencyId: andrewShaw.id, tagId: tagMap["standards"].id },
+      { residencyId: jmiLive.id, tagId: tagMap["student-friendly"].id },
+      { residencyId: jmiLive.id, tagId: tagMap["original-music"].id },
+      { residencyId: deathCo.id, tagId: tagMap["late-night"].id },
+      { residencyId: deathCo.id, tagId: tagMap["intimate-venue"].id },
+      { residencyId: alligatorRes.id, tagId: tagMap["improvised"].id },
+      { residencyId: alligatorRes.id, tagId: tagMap["free-entry"].id },
+    ],
+    skipDuplicates: true,
   });
 
   // ── Blogs ─────────────────────────────────────────────────────────────────

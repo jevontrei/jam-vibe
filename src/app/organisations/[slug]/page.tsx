@@ -34,7 +34,7 @@ export default async function OrganisationPage({ params }: { params: Promise<{ s
       {org.tags.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {org.tags.map(({ tag }) => (
-            <span key={tag.name} className="rounded-full bg-zinc-100 px-3 py-1 text-xs text-zinc-600">
+            <span key={tag.name} className="rounded-full bg-violet-100 px-3 py-1 text-xs text-violet-700">
               {tag.label}
             </span>
           ))}

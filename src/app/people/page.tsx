@@ -11,6 +11,7 @@ export default async function PeoplePage() {
       name: true,
       bio: true,
       instruments: { select: { instrument: { select: { name: true } } } },
+      tags: { select: { tag: { select: { name: true, label: true } } } },
     },
   })
 
@@ -31,6 +32,13 @@ export default async function PeoplePage() {
               )}
               {person.bio && (
                 <p className="mt-1 text-sm text-zinc-600 line-clamp-2">{person.bio}</p>
+              )}
+              {person.tags.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {person.tags.map(({ tag }) => (
+                    <span key={tag.name} className="rounded-full bg-violet-100 px-2 py-0.5 text-xs text-violet-700">{tag.label}</span>
+                  ))}
+                </div>
               )}
             </Link>
           ))}
