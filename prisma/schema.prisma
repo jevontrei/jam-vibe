@@ -1,0 +1,518 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum ContentStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  REJECTED
+}
+
+enum Frequency {
+  WEEKLY
+  FORTNIGHTLY
+  MONTHLY
+  IRREGULAR
+}
+
+enum OrgCategory {
+  SCHOOL
+  FESTIVAL
+  RADIO
+  PUBLICATION
+  COLLECTIVE
+  OTHER
+}
+
+// ─── Better Auth tables ───────────────────────────────────────────────────────
+// Do not modify these manually. Better Auth manages them.
+
+model User {
+  id            String   @id
+  name          String
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Custom fields
+  role      Role    @default(USER)
+  banned    Boolean @default(false)
+  banReason String?
+
+  // Better Auth
+  accounts Account[]
+  sessions Session[]
+
+  // Claimed person profile (one-to-one)
+  person Person? @relation("PersonClaim")
+
+  // Audit: records created by this user
+  createdPeople        Person[]       @relation("PersonCreator")
+  createdProjects      Project[]      @relation("ProjectCreator")
+  createdVenues        Venue[]        @relation("VenueCreator")
+  createdGigs          Gig[]          @relation("GigCreator")
+  createdResidencies   Residency[]    @relation("ResidencyCreator")
+  createdBlogs         Blog[]         @relation("BlogCreator")
+  createdOrganisations Organisation[] @relation("OrgCreator")
+
+  // Ownership: records claimed/owned by this user
+  ownedProjects Project[] @relation("ProjectOwner")
+  ownedVenues   Venue[]   @relation("VenueOwner")
+  ownedGigs     Gig[]     @relation("GigOwner")
+
+  // Editor access
+  editableGigs   GigEditor[]
+  editableVenues VenueEditor[]
+
+  // Saved items (Phase 2)
+  savedGigs        SavedGig[]
+  savedProjects    SavedProject[]
+  savedVenues      SavedVenue[]
+  savedResidencies SavedResidency[]
+
+  @@map("users")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("accounts")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verifications")
+}
+
+// ─── People ───────────────────────────────────────────────────────────────────
+// Public profile for any individual. Can exist before a user claims it.
+
+model Person {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  bio       String?
+  image     String?
+  links     Json? // [{label, url}]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Claimed by a user (null until claimed)
+  userId String? @unique
+  user   User?   @relation("PersonClaim", fields: [userId], references: [id], onDelete: SetNull)
+
+  // Audit
+  createdById String
+  createdBy   User   @relation("PersonCreator", fields: [createdById], references: [id])
+
+  instruments    PersonInstrument[]
+  projectMembers ProjectMember[]
+  tags           PersonTag[]
+
+  @@map("people")
+}
+
+model Instrument {
+  id     String             @id @default(cuid())
+  name   String             @unique
+  people PersonInstrument[]
+
+  @@map("instruments")
+}
+
+model PersonInstrument {
+  personId     String
+  instrumentId String
+  person       Person     @relation(fields: [personId], references: [id], onDelete: Cascade)
+  instrument   Instrument @relation(fields: [instrumentId], references: [id], onDelete: Cascade)
+
+  @@id([personId, instrumentId])
+  @@map("people_instruments")
+}
+
+// ─── Projects ─────────────────────────────────────────────────────────────────
+// Bands, ensembles, duos, solo acts — any performing grouping.
+// A solo show is a project with one member.
+
+model Project {
+  id        String        @id @default(cuid())
+  name      String
+  slug      String        @unique
+  bio       String?
+  image     String?
+  links     Json?
+  status    ContentStatus @default(DRAFT)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  createdById String
+  createdBy   User   @relation("ProjectCreator", fields: [createdById], references: [id])
+
+  ownerId String?
+  owner   User?   @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+
+  members     ProjectMember[]
+  gigLineups  GigLineup[]
+  residencies Residency[]
+  tags        ProjectTag[]
+  savedBy     SavedProject[]
+
+  @@map("projects")
+}
+
+// project_members doubles as editors for projects
+model ProjectMember {
+  projectId String
+  personId  String
+  role      String? // e.g. "leader"
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  person    Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, personId])
+  @@map("project_members")
+}
+
+// ─── Venues ───────────────────────────────────────────────────────────────────
+
+model Venue {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  address     String
+  suburb      String?
+  description String?
+  image       String?
+  links       Json?
+  status      ContentStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  createdById String
+  createdBy   User   @relation("VenueCreator", fields: [createdById], references: [id])
+
+  ownerId String?
+  owner   User?   @relation("VenueOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+
+  gigs        Gig[]
+  residencies Residency[]
+  editors     VenueEditor[]
+  tags        VenueTag[]
+  savedBy     SavedVenue[]
+
+  @@map("venues")
+}
+
+model VenueEditor {
+  venueId String
+  userId  String
+  venue   Venue @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([venueId, userId])
+  @@map("venue_editors")
+}
+
+// ─── Gigs ─────────────────────────────────────────────────────────────────────
+// Primary content. One-off events are the main discovery surface.
+
+model Gig {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  datetime    DateTime
+  description String?
+  image       String?
+  links       Json?
+  price       String? // freeform: "Free", "$15/$10 conc"
+  featured    Boolean       @default(false)
+  status      ContentStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  venueId String
+  venue   Venue  @relation(fields: [venueId], references: [id])
+
+  // Optional link back to a recurring residency
+  residencyId String?
+  residency   Residency? @relation(fields: [residencyId], references: [id], onDelete: SetNull)
+
+  createdById String
+  createdBy   User   @relation("GigCreator", fields: [createdById], references: [id])
+
+  ownerId String?
+  owner   User?   @relation("GigOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+
+  lineup  GigLineup[]
+  editors GigEditor[]
+  tags    GigTag[]
+  savedBy SavedGig[]
+
+  @@map("gigs")
+}
+
+// Gig lineups always reference projects, never people directly
+model GigLineup {
+  gigId     String
+  projectId String
+  order     Int? // for multi-act billing
+  gig       Gig     @relation(fields: [gigId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([gigId, projectId])
+  @@map("gig_lineups")
+}
+
+model GigEditor {
+  gigId  String
+  userId String
+  gig    Gig  @relation(fields: [gigId], references: [id], onDelete: Cascade)
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([gigId, userId])
+  @@map("gig_editors")
+}
+
+// ─── Residencies ──────────────────────────────────────────────────────────────
+// Recurring sessions. venueId is nullable for roving/unusual formats.
+
+model Residency {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  dayOfWeek   Int // 0=Mon, 6=Sun (ISO)
+  frequency   Frequency
+  startTime   String // "19:30"
+  active      Boolean   @default(true)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  venueId String?
+  venue   Venue?  @relation(fields: [venueId], references: [id], onDelete: SetNull)
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  createdById String
+  createdBy   User   @relation("ResidencyCreator", fields: [createdById], references: [id])
+
+  gigs    Gig[]
+  tags    ResidencyTag[]
+  savedBy SavedResidency[]
+
+  @@map("residencies")
+}
+
+// ─── Tags ─────────────────────────────────────────────────────────────────────
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique // slug-style: "sit-in-welcome"
+  label     String // human-readable: "Sit-in welcome"
+  createdAt DateTime @default(now())
+
+  gigs          GigTag[]
+  venues        VenueTag[]
+  projects      ProjectTag[]
+  residencies   ResidencyTag[]
+  people        PersonTag[]
+  organisations OrgTag[]
+
+  @@map("tags")
+}
+
+model GigTag {
+  gigId String
+  tagId String
+  gig   Gig @relation(fields: [gigId], references: [id], onDelete: Cascade)
+  tag   Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([gigId, tagId])
+  @@map("gig_tags")
+}
+
+model VenueTag {
+  venueId String
+  tagId   String
+  venue   Venue @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([venueId, tagId])
+  @@map("venue_tags")
+}
+
+model ProjectTag {
+  projectId String
+  tagId     String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, tagId])
+  @@map("project_tags")
+}
+
+model ResidencyTag {
+  residencyId String
+  tagId       String
+  residency   Residency @relation(fields: [residencyId], references: [id], onDelete: Cascade)
+  tag         Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([residencyId, tagId])
+  @@map("residency_tags")
+}
+
+model PersonTag {
+  personId String
+  tagId    String
+  person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([personId, tagId])
+  @@map("person_tags")
+}
+
+model OrgTag {
+  orgId String
+  tagId String
+  org   Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  tag   Tag          @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([orgId, tagId])
+  @@map("org_tags")
+}
+
+// ─── Blogs ────────────────────────────────────────────────────────────────────
+// Community-written. Anyone can write; mods/admins approve.
+
+model Blog {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  content     String // markdown
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  createdById String
+  createdBy   User   @relation("BlogCreator", fields: [createdById], references: [id])
+
+  @@map("blogs")
+}
+
+// ─── Organisations ────────────────────────────────────────────────────────────
+// JMI, The Con, BIJF, 4ZZZ, bnejazzguide, etc. Standalone info pages for now.
+
+model Organisation {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  category    OrgCategory
+  description String?
+  image       String?
+  links       Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  createdById String
+  createdBy   User   @relation("OrgCreator", fields: [createdById], references: [id])
+
+  tags OrgTag[]
+
+  @@map("organisations")
+}
+
+// ─── Saved items (Phase 2) ────────────────────────────────────────────────────
+// Schema included now; UI deferred to Phase 2.
+// Saving individual people is intentionally excluded.
+
+model SavedGig {
+  userId String
+  gigId  String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gig    Gig  @relation(fields: [gigId], references: [id], onDelete: Cascade)
+
+  @@id([userId, gigId])
+  @@map("saved_gigs")
+}
+
+model SavedProject {
+  userId    String
+  projectId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([userId, projectId])
+  @@map("saved_projects")
+}
+
+model SavedVenue {
+  userId  String
+  venueId String
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  venue   Venue @relation(fields: [venueId], references: [id], onDelete: Cascade)
+
+  @@id([userId, venueId])
+  @@map("saved_venues")
+}
+
+model SavedResidency {
+  userId      String
+  residencyId String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  residency   Residency @relation(fields: [residencyId], references: [id], onDelete: Cascade)
+
+  @@id([userId, residencyId])
+  @@map("saved_residencies")
+}
