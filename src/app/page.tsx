@@ -1,65 +1,108 @@
-import Image from "next/image";
+import { prisma } from "@/lib/prisma"
+import GigCard from "@/components/GigCard"
 
-export default function Home() {
+function startOfDay(date: Date) {
+  const d = new Date(date)
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+function endOfDay(date: Date) {
+  const d = new Date(date)
+  d.setHours(23, 59, 59, 999)
+  return d
+}
+
+function dayLabel(date: Date) {
+  return date.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" })
+}
+
+export default async function HomePage() {
+  const now = new Date()
+  const weekFromNow = new Date(now)
+  weekFromNow.setDate(weekFromNow.getDate() + 7)
+
+  const gigSelect = {
+    slug: true,
+    title: true,
+    datetime: true,
+    price: true,
+    venue: { select: { name: true, slug: true, suburb: true } },
+    lineup: { select: { project: { select: { name: true, slug: true } } } },
+    tags: { select: { tag: { select: { name: true, label: true } } } },
+  } as const
+
+  // Tonight
+  const tonightGigs = await prisma.gig.findMany({
+    where: {
+      status: "PUBLISHED",
+      datetime: { gte: startOfDay(now), lte: endOfDay(now) },
+    },
+    orderBy: { datetime: "asc" },
+    select: gigSelect,
+  })
+
+  // This week (days 1–7, grouped by day)
+  const tomorrow = new Date(now)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
+  const weekGigs = await prisma.gig.findMany({
+    where: {
+      status: "PUBLISHED",
+      datetime: { gte: startOfDay(tomorrow), lte: endOfDay(weekFromNow) },
+    },
+    orderBy: { datetime: "asc" },
+    select: gigSelect,
+  })
+
+  // Group week gigs by day
+  const byDay = new Map<string, typeof weekGigs>()
+  for (const gig of weekGigs) {
+    const key = gig.datetime.toDateString()
+    if (!byDay.has(key)) byDay.set(key, [])
+    byDay.get(key)!.push(gig)
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    <main className="mx-auto max-w-2xl px-4 py-12">
+      {/* Header */}
+      <div className="mb-10">
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-900">JAM</h1>
+        <p className="mt-1 text-zinc-500">Jazz Almanac Meanjin — your guide to live jazz across Brisbane</p>
+      </div>
+
+      {/* Tonight */}
+      <section className="mb-10">
+        <h2 className="mb-4 text-lg font-semibold text-zinc-900">Tonight</h2>
+        {tonightGigs.length > 0 ? (
+          <div className="flex flex-col gap-3">
+            {tonightGigs.map(gig => <GigCard key={gig.slug} {...gig} />)}
+          </div>
+        ) : (
+          <p className="text-sm text-zinc-400">No gigs listed tonight.</p>
+        )}
+      </section>
+
+      {/* This Week */}
+      <section>
+        <h2 className="mb-4 text-lg font-semibold text-zinc-900">This Week</h2>
+        {byDay.size > 0 ? (
+          <div className="flex flex-col gap-8">
+            {Array.from(byDay.entries()).map(([dateStr, gigs]) => (
+              <div key={dateStr}>
+                <h3 className="mb-3 text-sm font-medium uppercase tracking-wide text-zinc-400">
+                  {dayLabel(gigs[0].datetime)}
+                </h3>
+                <div className="flex flex-col gap-3">
+                  {gigs.map(gig => <GigCard key={gig.slug} {...gig} />)}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-zinc-400">Nothing listed this week yet.</p>
+        )}
+      </section>
+    </main>
+  )
 }
