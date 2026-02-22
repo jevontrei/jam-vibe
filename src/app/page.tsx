@@ -69,7 +69,7 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-12">
+    <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
       {/* Logo */}
       <div className="mb-10 flex flex-col items-center">
         <Image
@@ -77,7 +77,7 @@ export default async function HomePage() {
           alt="JAM"
           width={968}
           height={668}
-          className="h-44 w-auto"
+          className="h-28 w-auto max-w-full sm:h-36 md:h-44"
           priority
         />
         <p className="mt-3 text-zinc-500">

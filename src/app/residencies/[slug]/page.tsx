@@ -51,7 +51,7 @@ export default async function ResidencyPage({ params }: { params: Promise<{ slug
   if (!residency) notFound()
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-12">
+    <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
       <Link href="/residencies" className="text-sm text-zinc-400 hover:text-zinc-600">← Residencies</Link>
 
       <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900">{residency.name}</h1>

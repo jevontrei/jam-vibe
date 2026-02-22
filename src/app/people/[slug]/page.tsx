@@ -51,7 +51,7 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
     .filter((p): p is NonNullable<typeof p> => p !== null && !!p.slug && p.status === "PUBLISHED")
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-12">
+    <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
       <Link href="/people" className="text-sm text-zinc-400 hover:text-zinc-600">← People</Link>
 
       <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900">{person.name}</h1>

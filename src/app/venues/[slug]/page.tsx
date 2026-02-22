@@ -45,7 +45,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
   }
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-12">
+    <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
       <Link href="/venues" className="text-sm text-zinc-400 hover:text-zinc-600">← Venues</Link>
 
       <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900">{venue.name}</h1>

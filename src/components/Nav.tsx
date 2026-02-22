@@ -26,7 +26,7 @@ export default function Nav() {
 
   return (
     <header className="border-b border-zinc-200 bg-white">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+      <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
         {/* Logo */}
         <Link href="/" className="font-bold text-zinc-900" onClick={() => setOpen(false)}>
           JAM

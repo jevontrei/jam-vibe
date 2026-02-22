@@ -526,6 +526,204 @@ async function main() {
     skipDuplicates: true,
   });
 
+  // ── Extra venues ──────────────────────────────────────────────────────────
+  const burrow = await prisma.venue.upsert({
+    where: { slug: "the-burrow" },
+    update: {},
+    create: {
+      name: "The Burrow",
+      slug: "the-burrow",
+      address: "West End QLD 4101",
+      suburb: "West End",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+
+  const emporium = await prisma.venue.upsert({
+    where: { slug: "emporium-hotel" },
+    update: {},
+    create: {
+      name: "Emporium Hotel",
+      slug: "emporium-hotel",
+      address: "1000 Ann St, Fortitude Valley QLD 4006",
+      suburb: "Fortitude Valley",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+
+  const hyatt = await prisma.venue.upsert({
+    where: { slug: "hyatt-regency-brisbane" },
+    update: {},
+    create: {
+      name: "Hyatt Regency Brisbane",
+      slug: "hyatt-regency-brisbane",
+      address: "Adelaide St, Brisbane City QLD 4000",
+      suburb: "CBD",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+
+  const jmiVenue = await prisma.venue.upsert({
+    where: { slug: "jazz-music-institute" },
+    update: {},
+    create: {
+      name: "Jazz Music Institute",
+      slug: "jazz-music-institute",
+      address: "South Brisbane QLD 4101",
+      suburb: "South Brisbane",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+
+  const deathAndCo = await prisma.venue.upsert({
+    where: { slug: "death-and-co" },
+    update: {},
+    create: {
+      name: "Death & Co",
+      slug: "death-and-co",
+      address: "Fortitude Valley QLD 4006",
+      suburb: "Fortitude Valley",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+
+  const alligator = await prisma.venue.upsert({
+    where: { slug: "alligator-club" },
+    update: {},
+    create: {
+      name: "Alligator Club",
+      slug: "alligator-club",
+      address: "New Farm QLD 4005",
+      suburb: "New Farm",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+
+  // ── Extra residencies ──────────────────────────────────────────────────────
+  await prisma.residency.upsert({
+    where: { slug: "cut-time-burrow" },
+    update: {},
+    create: {
+      name: "Cut Time",
+      slug: "cut-time-burrow",
+      dayOfWeek: 1, // Tuesday
+      frequency: Frequency.WEEKLY,
+      startTime: "20:00",
+      active: true,
+      venueId: burrow.id,
+      createdById: admin.id,
+    },
+  });
+
+  await prisma.residency.upsert({
+    where: { slug: "el-ritmo-fridays" },
+    update: {},
+    create: {
+      name: "El Ritmo",
+      slug: "el-ritmo-fridays",
+      dayOfWeek: 4, // Friday
+      frequency: Frequency.WEEKLY,
+      startTime: "21:00",
+      active: true,
+      createdById: admin.id,
+    },
+  });
+
+  await prisma.residency.upsert({
+    where: { slug: "mr-vain" },
+    update: {},
+    create: {
+      name: "Mr Vain",
+      slug: "mr-vain",
+      dayOfWeek: 0, // Monday
+      frequency: Frequency.WEEKLY,
+      startTime: "20:00",
+      active: true,
+      createdById: admin.id,
+    },
+  });
+
+  await prisma.residency.upsert({
+    where: { slug: "emporium-saturdays" },
+    update: {},
+    create: {
+      name: "Emporium Saturdays",
+      slug: "emporium-saturdays",
+      dayOfWeek: 5, // Saturday
+      frequency: Frequency.WEEKLY,
+      startTime: "19:00",
+      active: true,
+      venueId: emporium.id,
+      createdById: admin.id,
+    },
+  });
+
+  await prisma.residency.upsert({
+    where: { slug: "andrew-shaw-hyatt" },
+    update: {},
+    create: {
+      name: "Andrew Shaw",
+      slug: "andrew-shaw-hyatt",
+      dayOfWeek: 6, // Sunday
+      frequency: Frequency.WEEKLY,
+      startTime: "18:00",
+      active: true,
+      venueId: hyatt.id,
+      createdById: admin.id,
+    },
+  });
+
+  await prisma.residency.upsert({
+    where: { slug: "jmi-live-thursdays" },
+    update: {},
+    create: {
+      name: "JMI Live",
+      slug: "jmi-live-thursdays",
+      dayOfWeek: 3, // Thursday
+      frequency: Frequency.WEEKLY,
+      startTime: "19:00",
+      active: true,
+      venueId: jmiVenue.id,
+      createdById: admin.id,
+    },
+  });
+
+  await prisma.residency.upsert({
+    where: { slug: "death-and-co-wednesdays" },
+    update: {},
+    create: {
+      name: "Death & Co Jazz",
+      slug: "death-and-co-wednesdays",
+      dayOfWeek: 2, // Wednesday
+      frequency: Frequency.WEEKLY,
+      startTime: "20:00",
+      active: true,
+      venueId: deathAndCo.id,
+      createdById: admin.id,
+    },
+  });
+
+  await prisma.residency.upsert({
+    where: { slug: "alligator-club-thursdays" },
+    update: {},
+    create: {
+      name: "Alligator Club",
+      slug: "alligator-club-thursdays",
+      dayOfWeek: 3, // Thursday
+      frequency: Frequency.WEEKLY,
+      startTime: "19:30",
+      active: true,
+      venueId: alligator.id,
+      createdById: admin.id,
+    },
+  });
+
   // ── Blogs ─────────────────────────────────────────────────────────────────
   await prisma.blog.upsert({
     where: { slug: "welcome-to-jam" },
