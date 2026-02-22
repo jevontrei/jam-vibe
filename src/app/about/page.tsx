@@ -29,7 +29,16 @@ export default function AboutPage() {
         </h2>
         <p>
           Submit a gig, claim your artist profile, or write a blog post. If you
-          want to help with the site itself, JAM is open source.
+          want to help with the site itself, JAM is open source —{" "}
+          <a
+            href="https://github.com/jevontrei/jam-vibe"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-zinc-900"
+          >
+            github.com/jevontrei/jam-vibe
+          </a>
+          .
         </p>
 
         <h2 className="mt-6 text-lg font-semibold text-zinc-900">Contact</h2>
