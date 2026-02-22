@@ -55,7 +55,7 @@ export default function Nav() {
 
       {/* Mobile dropdown */}
       {open && (
-        <nav className="md:hidden border-t border-zinc-100 bg-white px-4 pb-4 pt-2 flex flex-col gap-4">
+        <nav className="md:hidden border-t border-zinc-100 bg-white px-4 pb-4 pt-2 flex flex-col gap-3">
           {links.map(({ href, label }) => (
             <Link key={href} href={href} className={linkClass(href)} onClick={() => setOpen(false)}>
               {label}

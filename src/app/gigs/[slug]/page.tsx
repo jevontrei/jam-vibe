@@ -47,7 +47,8 @@ export default async function GigPage({ params }: { params: Promise<{ slug: stri
 
       {/* Date / time / venue */}
       <div className="mt-3 flex flex-col gap-1 text-sm text-zinc-600">
-        <p>{date} · {time}</p>
+        <p>{date}</p>
+        <p>{time}</p>
         <p>
           <Link href={`/venues/${gig.venue.slug}`} className="hover:underline font-medium">
             {gig.venue.name}
@@ -84,12 +85,16 @@ export default async function GigPage({ params }: { params: Promise<{ slug: stri
                   {project.name}
                 </Link>
                 {project.members.length > 0 && (
-                  <p className="mt-0.5 text-sm text-zinc-500">
+                  <div className="mt-0.5 flex flex-col gap-0.5 text-sm text-zinc-500">
                     {project.members.map(m => {
                       const instrs = m.person.instruments.map(pi => pi.instrument.name).join(", ")
-                      return `${m.person.name}${instrs ? ` (${instrs})` : ""}`
-                    }).join(" · ")}
-                  </p>
+                      return (
+                        <span key={m.person.slug}>
+                          {m.person.name}{instrs ? ` (${instrs})` : ""}
+                        </span>
+                      )
+                    })}
+                  </div>
                 )}
               </div>
             ))}
@@ -109,7 +114,7 @@ export default async function GigPage({ params }: { params: Promise<{ slug: stri
 
       {/* External links */}
       {Array.isArray(gig.links) && gig.links.length > 0 && (
-        <div className="mt-6 flex gap-4">
+        <div className="mt-6 flex flex-wrap gap-4">
           {(gig.links as { label: string; url: string }[]).map(link => (
             <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
               className="text-sm font-medium text-zinc-600 hover:underline">

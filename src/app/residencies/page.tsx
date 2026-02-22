@@ -42,10 +42,19 @@ export default async function ResidenciesPage() {
             <Link key={r.slug} href={`/residencies/${r.slug}`}
               className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 transition-colors">
               <h2 className="font-semibold text-zinc-900">{r.name}</h2>
-              <p className="mt-0.5 text-sm text-zinc-500">
-                {frequencyLabel[r.frequency]} · {dayLabel[r.dayOfWeek]}s · {r.startTime}
-                {r.venue && <> · {r.venue.name}{r.venue.suburb ? `, ${r.venue.suburb}` : ""}</>}
-              </p>
+              <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm text-zinc-500">
+                <span>{frequencyLabel[r.frequency]}</span>
+                <span>·</span>
+                <span>{dayLabel[r.dayOfWeek]}s</span>
+                <span>·</span>
+                <span>{r.startTime}</span>
+                {r.venue && (
+                  <>
+                    <span>·</span>
+                    <span>{r.venue.name}{r.venue.suburb ? `, ${r.venue.suburb}` : ""}</span>
+                  </>
+                )}
+              </div>
               {r.project && (
                 <p className="mt-0.5 text-sm text-zinc-500">{r.project.name}</p>
               )}

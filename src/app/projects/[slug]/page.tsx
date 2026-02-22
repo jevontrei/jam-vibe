@@ -78,7 +78,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       {/* External links */}
       {Array.isArray(project.links) && project.links.length > 0 && (
-        <div className="mt-4 flex gap-4">
+        <div className="mt-4 flex flex-wrap gap-4">
           {(project.links as { label: string; url: string }[]).map(link => (
             <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
               className="text-sm font-medium text-zinc-600 hover:underline">
@@ -96,13 +96,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             {project.members.map(({ person, role }) => {
               const instrs = person.instruments.map(pi => pi.instrument.name).join(", ")
               return (
-                <div key={person.slug} className="flex items-baseline justify-between">
+                <div key={person.slug} className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
                   <Link href={`/people/${person.slug}`} className="font-medium text-zinc-900 hover:underline">
                     {person.name}
                   </Link>
-                  <span className="text-sm text-zinc-500">
-                    {[instrs, role].filter(Boolean).join(" · ")}
-                  </span>
+                  {(instrs || role) && (
+                    <span className="text-sm text-zinc-500">
+                      {[instrs, role].filter(Boolean).join(" · ")}
+                    </span>
+                  )}
                 </div>
               )
             })}
@@ -119,10 +121,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               <Link key={r.slug} href={`/residencies/${r.slug}`}
                 className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 transition-colors">
                 <p className="font-semibold text-zinc-900">{r.name}</p>
-                <p className="mt-0.5 text-sm text-zinc-500">
-                  {frequencyLabel[r.frequency]} · {dayLabel[r.dayOfWeek]}s · {r.startTime}
-                  {r.venue && <> · <span className="text-zinc-600">{r.venue.name}</span></>}
-                </p>
+                <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm text-zinc-500">
+                  <span>{frequencyLabel[r.frequency]}</span>
+                  <span>·</span>
+                  <span>{dayLabel[r.dayOfWeek]}s</span>
+                  <span>·</span>
+                  <span>{r.startTime}</span>
+                  {r.venue && <><span>·</span><span className="text-zinc-600">{r.venue.name}</span></>}
+                </div>
               </Link>
             ))}
           </div>

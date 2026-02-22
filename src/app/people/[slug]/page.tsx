@@ -77,7 +77,7 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
 
       {/* External links */}
       {Array.isArray(person.links) && person.links.length > 0 && (
-        <div className="mt-4 flex gap-4">
+        <div className="mt-4 flex flex-wrap gap-4">
           {(person.links as { label: string; url: string }[]).map(link => (
             <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
               className="text-sm font-medium text-zinc-600 hover:underline">

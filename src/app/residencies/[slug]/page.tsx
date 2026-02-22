@@ -58,7 +58,13 @@ export default async function ResidencyPage({ params }: { params: Promise<{ slug
 
       {/* Key info */}
       <div className="mt-3 flex flex-col gap-1 text-sm text-zinc-600">
-        <p>{frequencyLabel[residency.frequency]} · {dayLabel[residency.dayOfWeek]}s · {residency.startTime}</p>
+        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+          <span>{frequencyLabel[residency.frequency]}</span>
+          <span>·</span>
+          <span>{dayLabel[residency.dayOfWeek]}s</span>
+          <span>·</span>
+          <span>{residency.startTime}</span>
+        </div>
         {residency.venue && (
           <p>
             <Link href={`/venues/${residency.venue.slug}`} className="font-medium hover:underline">
@@ -91,12 +97,16 @@ export default async function ResidencyPage({ params }: { params: Promise<{ slug
             className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 transition-colors">
             <p className="font-semibold text-zinc-900">{residency.project.name}</p>
             {residency.project.members.length > 0 && (
-              <p className="mt-0.5 text-sm text-zinc-500">
+              <div className="mt-0.5 flex flex-col gap-0.5 text-sm text-zinc-500">
                 {residency.project.members.map(m => {
                   const instrs = m.person.instruments.map(pi => pi.instrument.name).join(", ")
-                  return `${m.person.name}${instrs ? ` (${instrs})` : ""}`
-                }).join(" · ")}
-              </p>
+                  return (
+                    <span key={m.person.slug}>
+                      {m.person.name}{instrs ? ` (${instrs})` : ""}
+                    </span>
+                  )
+                })}
+              </div>
             )}
           </Link>
         </section>

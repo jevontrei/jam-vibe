@@ -71,7 +71,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
 
       {/* External links */}
       {Array.isArray(venue.links) && venue.links.length > 0 && (
-        <div className="mt-4 flex gap-4">
+        <div className="mt-4 flex flex-wrap gap-4">
           {(venue.links as { label: string; url: string }[]).map(link => (
             <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
               className="text-sm font-medium text-zinc-600 hover:underline">
@@ -90,10 +90,14 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
               <Link key={r.slug} href={`/residencies/${r.slug}`}
                 className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 transition-colors">
                 <p className="font-semibold text-zinc-900">{r.name}</p>
-                <p className="mt-0.5 text-sm text-zinc-500">
-                  {frequencyLabel[r.frequency]} · {dayLabel[r.dayOfWeek]}s · {r.startTime}
-                  {r.project && <> · <span className="text-zinc-600">{r.project.name}</span></>}
-                </p>
+                <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm text-zinc-500">
+                  <span>{frequencyLabel[r.frequency]}</span>
+                  <span>·</span>
+                  <span>{dayLabel[r.dayOfWeek]}s</span>
+                  <span>·</span>
+                  <span>{r.startTime}</span>
+                  {r.project && <><span>·</span><span className="text-zinc-600">{r.project.name}</span></>}
+                </div>
               </Link>
             ))}
           </div>
