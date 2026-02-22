@@ -40,7 +40,7 @@ export default async function OrganisationsPage() {
         <div className="flex flex-col gap-10">
           {Object.entries(grouped).map(([category, items]) => (
             <section key={category}>
-              <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">
+              <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">
                 {categoryLabel[category] ?? category}
               </h2>
               <div className="flex flex-col gap-3">

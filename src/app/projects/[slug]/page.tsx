@@ -58,7 +58,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
-      <Link href="/projects" className="text-sm text-zinc-400 hover:text-zinc-600">← Projects</Link>
+      <Link href="/projects" className="text-sm text-violet-400 hover:text-violet-600">← Projects</Link>
 
       <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900">{project.name}</h1>
 
@@ -91,7 +91,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       {/* Members */}
       {project.members.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Members</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">Members</h2>
           <div className="flex flex-col gap-2">
             {project.members.map(({ person, role }) => {
               const instrs = person.instruments.map(pi => pi.instrument.name).join(", ")
@@ -115,7 +115,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       {/* Residencies */}
       {project.residencies.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Regular nights</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">Regular nights</h2>
           <div className="flex flex-col gap-3">
             {project.residencies.map(r => (
               <Link key={r.slug} href={`/residencies/${r.slug}`}
@@ -138,7 +138,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       {/* Upcoming gigs */}
       {upcomingGigs.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Upcoming gigs</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">Upcoming gigs</h2>
           <div className="flex flex-col gap-3">
             {upcomingGigs.map(gig => <GigCard key={gig.slug} {...gig} />)}
           </div>

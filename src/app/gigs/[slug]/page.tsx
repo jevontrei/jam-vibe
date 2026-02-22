@@ -41,7 +41,7 @@ export default async function GigPage({ params }: { params: Promise<{ slug: stri
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
-      <Link href="/gigs" className="text-sm text-zinc-400 hover:text-zinc-600">← Gigs</Link>
+      <Link href="/gigs" className="text-sm text-violet-400 hover:text-violet-600">← Gigs</Link>
 
       <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900">{gig.title}</h1>
 
@@ -77,7 +77,7 @@ export default async function GigPage({ params }: { params: Promise<{ slug: stri
       {/* Lineup */}
       {gig.lineup.length > 0 && (
         <section className="mt-8">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Lineup</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">Lineup</h2>
           <div className="flex flex-col gap-4">
             {gig.lineup.map(({ project }) => (
               <div key={project.slug}>

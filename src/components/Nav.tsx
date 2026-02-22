@@ -21,14 +21,18 @@ export default function Nav() {
 
   const linkClass = (href: string) => {
     const active = pathname === href || pathname.startsWith(href + "/");
-    return `text-sm transition-colors ${active ? "font-medium text-zinc-900" : "text-zinc-500 hover:text-zinc-900"}`;
+    return `text-sm transition-colors ${active ? "font-semibold text-violet-700" : "text-zinc-500 hover:text-zinc-900"}`;
   };
 
   return (
-    <header className="border-b border-zinc-200 bg-white">
+    <header className="border-b border-violet-100 bg-white">
       <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
         {/* Logo */}
-        <Link href="/" className="font-bold text-zinc-900" onClick={() => setOpen(false)}>
+        <Link
+          href="/"
+          className="mr-8 font-bold text-zinc-900"
+          onClick={() => setOpen(false)}
+        >
           JAM
         </Link>
 
@@ -44,12 +48,18 @@ export default function Nav() {
         {/* Mobile hamburger */}
         <button
           className="md:hidden flex flex-col gap-1.5 p-1"
-          onClick={() => setOpen(o => !o)}
+          onClick={() => setOpen((o) => !o)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
-          <span className={`block h-0.5 w-6 bg-zinc-700 transition-all duration-200 ${open ? "translate-y-2 rotate-45" : ""}`} />
-          <span className={`block h-0.5 w-6 bg-zinc-700 transition-all duration-200 ${open ? "opacity-0" : ""}`} />
-          <span className={`block h-0.5 w-6 bg-zinc-700 transition-all duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+          <span
+            className={`block h-0.5 w-6 bg-zinc-700 transition-all duration-200 ${open ? "translate-y-2 rotate-45" : ""}`}
+          />
+          <span
+            className={`block h-0.5 w-6 bg-zinc-700 transition-all duration-200 ${open ? "opacity-0" : ""}`}
+          />
+          <span
+            className={`block h-0.5 w-6 bg-zinc-700 transition-all duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`}
+          />
         </button>
       </div>
 
@@ -57,7 +67,12 @@ export default function Nav() {
       {open && (
         <nav className="md:hidden border-t border-zinc-100 bg-white px-4 pb-4 pt-2 flex flex-col gap-3">
           {links.map(({ href, label }) => (
-            <Link key={href} href={href} className={linkClass(href)} onClick={() => setOpen(false)}>
+            <Link
+              key={href}
+              href={href}
+              className={linkClass(href)}
+              onClick={() => setOpen(false)}
+            >
               {label}
             </Link>
           ))}

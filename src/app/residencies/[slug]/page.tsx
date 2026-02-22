@@ -52,7 +52,7 @@ export default async function ResidencyPage({ params }: { params: Promise<{ slug
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
-      <Link href="/residencies" className="text-sm text-zinc-400 hover:text-zinc-600">← Residencies</Link>
+      <Link href="/residencies" className="text-sm text-violet-400 hover:text-violet-600">← Residencies</Link>
 
       <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900">{residency.name}</h1>
 
@@ -92,7 +92,7 @@ export default async function ResidencyPage({ params }: { params: Promise<{ slug
       {/* Regular project / lineup */}
       {residency.project && (
         <section className="mt-10">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">House band</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">House band</h2>
           <Link href={`/projects/${residency.project.slug}`}
             className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 transition-colors">
             <p className="font-semibold text-zinc-900">{residency.project.name}</p>
@@ -115,7 +115,7 @@ export default async function ResidencyPage({ params }: { params: Promise<{ slug
       {/* Upcoming instances */}
       {residency.gigs.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Upcoming dates</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">Upcoming dates</h2>
           <div className="flex flex-col gap-3">
             {residency.gigs.map(gig => <GigCard key={gig.slug} {...gig} />)}
           </div>

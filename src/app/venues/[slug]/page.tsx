@@ -46,7 +46,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
-      <Link href="/venues" className="text-sm text-zinc-400 hover:text-zinc-600">← Venues</Link>
+      <Link href="/venues" className="text-sm text-violet-400 hover:text-violet-600">← Venues</Link>
 
       <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900">{venue.name}</h1>
 
@@ -84,7 +84,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
       {/* Residencies */}
       {venue.residencies.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Regular nights</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">Regular nights</h2>
           <div className="flex flex-col gap-3">
             {venue.residencies.map(r => (
               <Link key={r.slug} href={`/residencies/${r.slug}`}
@@ -107,7 +107,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
       {/* Upcoming gigs */}
       {venue.gigs.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Upcoming gigs</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">Upcoming gigs</h2>
           <div className="flex flex-col gap-3">
             {venue.gigs.map(gig => <GigCard key={gig.slug} {...gig} />)}
           </div>

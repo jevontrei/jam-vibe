@@ -51,7 +51,7 @@ export default async function GigsPage() {
         <div className="flex flex-col gap-10">
           {Array.from(byDay.entries()).map(([, gigs]) => (
             <div key={gigs[0].datetime.toDateString()}>
-              <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-zinc-400">
+              <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-violet-400">
                 {dayLabel(gigs[0].datetime)}
               </h2>
               <div className="flex flex-col gap-3">

@@ -109,8 +109,8 @@ export default async function HomePage() {
         {/* Tonight */}
         <section className="rounded-xl border border-zinc-200 p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">Tonight</h2>
-            <Link href="/gigs" className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors">All gigs →</Link>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-violet-400">Tonight</h2>
+            <Link href="/gigs" className="text-xs text-violet-400 hover:text-violet-600 transition-colors">All gigs →</Link>
           </div>
           {tonightGigs.length > 0 ? (
             <div className="divide-y divide-zinc-100">
@@ -136,8 +136,8 @@ export default async function HomePage() {
         {/* Regular nights */}
         <section className="rounded-xl border border-zinc-200 p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">Regular Nights</h2>
-            <Link href="/residencies" className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors">All residencies →</Link>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-violet-400">Regular Nights</h2>
+            <Link href="/residencies" className="text-xs text-violet-400 hover:text-violet-600 transition-colors">All residencies →</Link>
           </div>
           {residencies.length > 0 ? (
             <div className="divide-y divide-zinc-100">
@@ -162,13 +162,13 @@ export default async function HomePage() {
         {/* Venues — full width */}
         <section className="rounded-xl border border-zinc-200 p-5 md:col-span-2">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">Venues</h2>
-            <Link href="/venues" className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors">All venues →</Link>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-violet-400">Venues</h2>
+            <Link href="/venues" className="text-xs text-violet-400 hover:text-violet-600 transition-colors">All venues →</Link>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {venues.map(v => (
               <Link key={v.slug} href={`/venues/${v.slug}`}
-                className="rounded-lg bg-zinc-50 p-3 hover:bg-zinc-100 transition-colors">
+                className="rounded-lg bg-violet-50 p-3 hover:bg-violet-100 transition-colors">
                 <p className="font-medium text-sm text-zinc-900 truncate">{v.name}</p>
                 {v.suburb && <p className="text-xs text-zinc-500">{v.suburb}</p>}
               </Link>
@@ -179,8 +179,8 @@ export default async function HomePage() {
         {/* Projects */}
         <section className="rounded-xl border border-zinc-200 p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">Projects</h2>
-            <Link href="/projects" className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors">All projects →</Link>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-violet-400">Projects</h2>
+            <Link href="/projects" className="text-xs text-violet-400 hover:text-violet-600 transition-colors">All projects →</Link>
           </div>
           <div className="divide-y divide-zinc-100">
             {projects.map(p => (
@@ -200,13 +200,13 @@ export default async function HomePage() {
         {/* People */}
         <section className="rounded-xl border border-zinc-200 p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">People</h2>
-            <Link href="/people" className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors">All people →</Link>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-violet-400">People</h2>
+            <Link href="/people" className="text-xs text-violet-400 hover:text-violet-600 transition-colors">All people →</Link>
           </div>
           <div className="grid grid-cols-2 gap-2">
             {people.map(p => (
               <Link key={p.slug} href={`/people/${p.slug}`}
-                className="rounded-lg bg-zinc-50 p-3 hover:bg-zinc-100 transition-colors">
+                className="rounded-lg bg-violet-50 p-3 hover:bg-violet-100 transition-colors">
                 <p className="font-medium text-sm text-zinc-900 truncate">{p.name}</p>
                 {p.instruments.length > 0 && (
                   <p className="text-xs text-zinc-500 truncate">
@@ -222,8 +222,8 @@ export default async function HomePage() {
         {latestBlog && (
           <section className="rounded-xl border border-zinc-200 p-5 md:col-span-2">
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">From the Blog</h2>
-              <Link href="/blogs" className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors">All posts →</Link>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-violet-400">From the Blog</h2>
+              <Link href="/blogs" className="text-xs text-violet-400 hover:text-violet-600 transition-colors">All posts →</Link>
             </div>
             <Link href={`/blogs/${latestBlog.slug}`} className="group block hover:opacity-70 transition-opacity">
               <p className="font-semibold text-zinc-900 group-hover:underline">{latestBlog.title}</p>

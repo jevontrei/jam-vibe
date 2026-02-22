@@ -53,7 +53,7 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
-      <Link href="/people" className="text-sm text-zinc-400 hover:text-zinc-600">← People</Link>
+      <Link href="/people" className="text-sm text-violet-400 hover:text-violet-600">← People</Link>
 
       <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900">{person.name}</h1>
 
@@ -90,7 +90,7 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
       {/* Projects */}
       {projects.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Projects</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">Projects</h2>
           <div className="flex flex-col gap-3">
             {projects.map(project => (
               <Link key={project.slug} href={`/projects/${project.slug}`}
@@ -108,7 +108,7 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
       {/* Upcoming gigs */}
       {upcomingGigs.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Upcoming gigs</h2>
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-violet-400">Upcoming gigs</h2>
           <div className="flex flex-col gap-3">
             {upcomingGigs.map(gig => <GigCard key={gig.slug} {...gig} />)}
           </div>
