@@ -1,26 +1,31 @@
-import { prisma } from "@/lib/prisma"
-import GigCard from "@/components/GigCard"
+import { prisma } from "@/lib/prisma";
+import GigCard from "@/components/GigCard";
+import Image from "next/image";
 
 function startOfDay(date: Date) {
-  const d = new Date(date)
-  d.setHours(0, 0, 0, 0)
-  return d
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
 }
 
 function endOfDay(date: Date) {
-  const d = new Date(date)
-  d.setHours(23, 59, 59, 999)
-  return d
+  const d = new Date(date);
+  d.setHours(23, 59, 59, 999);
+  return d;
 }
 
 function dayLabel(date: Date) {
-  return date.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" })
+  return date.toLocaleDateString("en-AU", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
 }
 
 export default async function HomePage() {
-  const now = new Date()
-  const weekFromNow = new Date(now)
-  weekFromNow.setDate(weekFromNow.getDate() + 7)
+  const now = new Date();
+  const weekFromNow = new Date(now);
+  weekFromNow.setDate(weekFromNow.getDate() + 7);
 
   const gigSelect = {
     slug: true,
@@ -30,7 +35,7 @@ export default async function HomePage() {
     venue: { select: { name: true, slug: true, suburb: true } },
     lineup: { select: { project: { select: { name: true, slug: true } } } },
     tags: { select: { tag: { select: { name: true, label: true } } } },
-  } as const
+  } as const;
 
   // Tonight
   const tonightGigs = await prisma.gig.findMany({
@@ -40,11 +45,11 @@ export default async function HomePage() {
     },
     orderBy: { datetime: "asc" },
     select: gigSelect,
-  })
+  });
 
   // This week (days 1–7, grouped by day)
-  const tomorrow = new Date(now)
-  tomorrow.setDate(tomorrow.getDate() + 1)
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
   const weekGigs = await prisma.gig.findMany({
     where: {
@@ -53,22 +58,31 @@ export default async function HomePage() {
     },
     orderBy: { datetime: "asc" },
     select: gigSelect,
-  })
+  });
 
   // Group week gigs by day
-  const byDay = new Map<string, typeof weekGigs>()
+  const byDay = new Map<string, typeof weekGigs>();
   for (const gig of weekGigs) {
-    const key = gig.datetime.toDateString()
-    if (!byDay.has(key)) byDay.set(key, [])
-    byDay.get(key)!.push(gig)
+    const key = gig.datetime.toDateString();
+    if (!byDay.has(key)) byDay.set(key, []);
+    byDay.get(key)!.push(gig);
   }
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-900">JAM</h1>
-        <p className="mt-1 text-zinc-500">Jazz Almanac Meanjin — your guide to live jazz across Brisbane</p>
+      {/* Logo */}
+      <div className="mb-10 flex flex-col items-center">
+        <Image
+          src="/JAM-logo-cropped.png"
+          alt="JAM"
+          width={968}
+          height={668}
+          className="h-44 w-auto"
+          priority
+        />
+        <p className="mt-3 text-zinc-500">
+          Your guide to jazz and live music across Meanjin/Brisbane
+        </p>
       </div>
 
       {/* Tonight */}
@@ -76,7 +90,9 @@ export default async function HomePage() {
         <h2 className="mb-4 text-lg font-semibold text-zinc-900">Tonight</h2>
         {tonightGigs.length > 0 ? (
           <div className="flex flex-col gap-3">
-            {tonightGigs.map(gig => <GigCard key={gig.slug} {...gig} />)}
+            {tonightGigs.map((gig) => (
+              <GigCard key={gig.slug} {...gig} />
+            ))}
           </div>
         ) : (
           <p className="text-sm text-zinc-400">No gigs listed tonight.</p>
@@ -94,7 +110,9 @@ export default async function HomePage() {
                   {dayLabel(gigs[0].datetime)}
                 </h3>
                 <div className="flex flex-col gap-3">
-                  {gigs.map(gig => <GigCard key={gig.slug} {...gig} />)}
+                  {gigs.map((gig) => (
+                    <GigCard key={gig.slug} {...gig} />
+                  ))}
                 </div>
               </div>
             ))}
@@ -104,5 +122,5 @@ export default async function HomePage() {
         )}
       </section>
     </main>
-  )
+  );
 }
