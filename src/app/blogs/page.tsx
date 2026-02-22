@@ -12,6 +12,7 @@ export default async function BlogsPage() {
       title: true,
       publishedAt: true,
       createdBy: { select: { name: true } },
+      tags: { select: { tag: { select: { name: true, label: true } } } },
     },
   })
 
@@ -31,6 +32,13 @@ export default async function BlogsPage() {
                   <> · {new Date(blog.publishedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}</>
                 )}
               </p>
+              {blog.tags.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {blog.tags.map(({ tag }) => (
+                    <span key={tag.name} className="rounded-full bg-violet-100 px-2 py-0.5 text-xs text-violet-700">{tag.label}</span>
+                  ))}
+                </div>
+              )}
             </Link>
           ))}
         </div>

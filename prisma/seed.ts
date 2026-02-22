@@ -877,7 +877,7 @@ async function main() {
   });
 
   // ── Blogs ─────────────────────────────────────────────────────────────────
-  await prisma.blog.upsert({
+  const blog1 = await prisma.blog.upsert({
     where: { slug: "welcome-to-jam" },
     update: {},
     create: {
@@ -891,21 +891,11 @@ async function main() {
         content: [
           {
             type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: "JAM — Jazz Almanac Meanjin — is a free, community-run guide to jazz and improvised music in Brisbane. No paywalls, no algorithms, no ads. Just gigs, venues, artists, and the people who love this music.",
-              },
-            ],
+            content: [{ type: "text", text: "JAM — Jazz Almanac Meanjin — is a free, community-run guide to jazz and improvised music in Brisbane. No paywalls, no algorithms, no ads. Just gigs, venues, artists, and the people who love this music." }],
           },
           {
             type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: "This is a democratic place. Anyone can submit a gig, claim their artist profile, or write a post. The editorial team keeps the lights on, but the scene runs itself.",
-              },
-            ],
+            content: [{ type: "text", text: "This is a democratic place. Anyone can submit a gig, claim their artist profile, or write a post. The editorial team keeps the lights on, but the scene runs itself." }],
           },
           {
             type: "heading",
@@ -915,22 +905,10 @@ async function main() {
           {
             type: "bulletList",
             content: [
-              {
-                type: "listItem",
-                content: [{ type: "paragraph", content: [{ type: "text", text: "Gigs — tonight, this week, further out" }] }],
-              },
-              {
-                type: "listItem",
-                content: [{ type: "paragraph", content: [{ type: "text", text: "Venues — where the music lives" }] }],
-              },
-              {
-                type: "listItem",
-                content: [{ type: "paragraph", content: [{ type: "text", text: "Artists and projects — who's playing" }] }],
-              },
-              {
-                type: "listItem",
-                content: [{ type: "paragraph", content: [{ type: "text", text: "Residencies — the regular nights worth knowing" }] }],
-              },
+              { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Gigs — tonight, this week, further out" }] }] },
+              { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Venues — where the music lives" }] }] },
+              { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Artists and projects — who's playing" }] }] },
+              { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Residencies — the regular nights worth knowing" }] }] },
             ],
           },
           {
@@ -940,6 +918,141 @@ async function main() {
         ],
       },
     },
+  });
+
+  const blog2 = await prisma.blog.upsert({
+    where: { slug: "why-residencies-matter" },
+    update: {},
+    create: {
+      slug: "why-residencies-matter",
+      title: "Why residencies matter",
+      status: ContentStatus.PUBLISHED,
+      publishedAt: new Date("2026-02-08"),
+      createdById: admin.id,
+      content: {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "A one-off gig is exciting. A residency is how a scene actually builds itself." }],
+          },
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "When a band holds down a weekly or fortnightly slot, something different happens. Audiences start to trust the night. Musicians get to take risks. The room develops a personality. It becomes a place — not just an event." }],
+          },
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "Brisbane has always had a handful of residencies that function this way. Liv Marlton's Sunday session at Mirrorball. JMI Live on Thursdays. The Sunday afternoon sets at the Hyatt. These nights are the connective tissue of the scene — they're where students hear working musicians up close, where sit-ins happen, where the informal mentorship that defines a jazz community takes place." }],
+          },
+          {
+            type: "heading",
+            attrs: { level: 2 },
+            content: [{ type: "text", text: "The sit-in tradition" }],
+          },
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "Most of Brisbane's open residencies operate on a loose sit-in model. You bring your axe, you introduce yourself to the bandleader, you wait for the nod. It's informal, but there's an etiquette to it — listen before you play, lock in with the rhythm section, read the room." }],
+          },
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "If you're new to the scene, these nights are the fastest way in. Show up, listen, play when invited, come back next week." }],
+          },
+        ],
+      },
+    },
+  });
+
+  const blog3 = await prisma.blog.upsert({
+    where: { slug: "a-guide-to-the-valley" },
+    update: {},
+    create: {
+      slug: "a-guide-to-the-valley",
+      title: "A guide to jazz in the Valley",
+      status: ContentStatus.PUBLISHED,
+      publishedAt: new Date("2026-02-15"),
+      createdById: admin.id,
+      content: {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "Fortitude Valley has always been Brisbane's nightlife hub, but it's also quietly become one of the better jazz precincts in the city. Here's where to look." }],
+          },
+          {
+            type: "heading",
+            attrs: { level: 2 },
+            content: [{ type: "text", text: "Mirrorball Ministries" }],
+          },
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "Late-night, intimate, and reliably adventurous. Mirrorball is where you go when you want the music to be the main event. Sundays are anchored by Liv Marlton's open session — sit-ins welcome, no cover." }],
+          },
+          {
+            type: "heading",
+            attrs: { level: 2 },
+            content: [{ type: "text", text: "Emporium Hotel" }],
+          },
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "The Emporium Saturday nights lean more polished — think smart casual, proper sound system, full bar. A good option if you want to bring someone who hasn't been to a jazz gig before." }],
+          },
+          {
+            type: "heading",
+            attrs: { level: 2 },
+            content: [{ type: "text", text: "Death & Co" }],
+          },
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "More cocktail bar than music venue, but the Wednesday night jazz sets are worth knowing about. Low key, good drinks, the kind of vibe where nobody's checking their phone." }],
+          },
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "The Valley rewards the curious. Walk around on a Friday night and you'll hear more live jazz than you expect." }],
+          },
+        ],
+      },
+    },
+  });
+
+  // ── Blog tags ──────────────────────────────────────────────────────────────
+  await prisma.blogTag.createMany({
+    data: [
+      { blogId: blog1.id, tagId: tagMap["all-ages"].id },
+      { blogId: blog1.id, tagId: tagMap["free-entry"].id },
+      { blogId: blog1.id, tagId: tagMap["modern-jazz"].id },
+      { blogId: blog2.id, tagId: tagMap["residency"].id },
+      { blogId: blog2.id, tagId: tagMap["sit-in-welcome"].id },
+      { blogId: blog2.id, tagId: tagMap["improvised"].id },
+      { blogId: blog3.id, tagId: tagMap["late-night"].id },
+      { blogId: blog3.id, tagId: tagMap["bar"].id },
+      { blogId: blog3.id, tagId: tagMap["modern-jazz"].id },
+    ],
+    skipDuplicates: true,
+  });
+
+  // ── Missing venue tags ─────────────────────────────────────────────────────
+  await prisma.venueTag.createMany({
+    data: [
+      { venueId: burrow.id, tagId: tagMap["intimate-venue"].id },
+      { venueId: burrow.id, tagId: tagMap["sit-in-welcome"].id },
+      { venueId: burrow.id, tagId: tagMap["bar"].id },
+      { venueId: emporium.id, tagId: tagMap["modern-jazz"].id },
+      { venueId: emporium.id, tagId: tagMap["licensed"].id },
+      { venueId: emporium.id, tagId: tagMap["seated"].id },
+      { venueId: hyatt.id, tagId: tagMap["trad-jazz"].id },
+      { venueId: hyatt.id, tagId: tagMap["standards"].id },
+      { venueId: hyatt.id, tagId: tagMap["licensed"].id },
+      { venueId: jmiVenue.id, tagId: tagMap["student-friendly"].id },
+      { venueId: jmiVenue.id, tagId: tagMap["original-music"].id },
+      { venueId: jmiVenue.id, tagId: tagMap["all-ages"].id },
+      { venueId: deathAndCo.id, tagId: tagMap["late-night"].id },
+      { venueId: deathAndCo.id, tagId: tagMap["intimate-venue"].id },
+      { venueId: deathAndCo.id, tagId: tagMap["bar"].id },
+      { venueId: alligator.id, tagId: tagMap["improvised"].id },
+      { venueId: alligator.id, tagId: tagMap["free-entry"].id },
+      { venueId: alligator.id, tagId: tagMap["late-night"].id },
+    ],
+    skipDuplicates: true,
   });
 
   // ── Organisations ─────────────────────────────────────────────────────────

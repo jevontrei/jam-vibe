@@ -13,6 +13,7 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
       content: true,
       publishedAt: true,
       createdBy: { select: { name: true } },
+      tags: { select: { tag: { select: { name: true, label: true } } } },
     },
   })
 
@@ -30,6 +31,14 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
           <> · {new Date(blog.publishedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}</>
         )}
       </p>
+
+      {blog.tags.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {blog.tags.map(({ tag }) => (
+            <span key={tag.name} className="rounded-full bg-violet-100 px-3 py-1 text-xs text-violet-700">{tag.label}</span>
+          ))}
+        </div>
+      )}
 
       <div className="mt-8">
         <TiptapRenderer content={blog.content} />

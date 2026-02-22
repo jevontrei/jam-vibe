@@ -368,6 +368,7 @@ model Tag {
   residencies   ResidencyTag[]
   people        PersonTag[]
   organisations OrgTag[]
+  blogs         BlogTag[]
 
   @@map("tags")
 }
@@ -448,7 +449,19 @@ model Blog {
   createdById String
   createdBy   User   @relation("BlogCreator", fields: [createdById], references: [id])
 
+  tags BlogTag[]
+
   @@map("blogs")
+}
+
+model BlogTag {
+  blogId String
+  tagId  String
+  blog   Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([blogId, tagId])
+  @@map("blog_tags")
 }
 
 // ─── Organisations ────────────────────────────────────────────────────────────
