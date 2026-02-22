@@ -36,6 +36,9 @@ yarn-error.log*
 # Claude Code
 .claude/
 
+# Prisma generated client
+src/generated/
+
 # vercel
 .vercel
 
