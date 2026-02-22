@@ -439,7 +439,7 @@ model Blog {
   id          String        @id @default(cuid())
   slug        String        @unique
   title       String
-  content     String // markdown
+  content     Json // Tiptap JSON (ProseMirror document)
   status      ContentStatus @default(DRAFT)
   publishedAt DateTime?
   createdAt   DateTime      @default(now())
