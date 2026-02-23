@@ -4,6 +4,8 @@ import { neonConfig } from "@neondatabase/serverless";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 
+// THIS script could've been deleted, but i kept it here in case we need to seed other stuff later - will just need to tweak a couple of things
+
 neonConfig.webSocketConstructor = ws;
 
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
