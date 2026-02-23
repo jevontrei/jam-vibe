@@ -6,43 +6,44 @@ import { notFound } from "next/navigation"
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
-  const project = await prisma.project.findUnique({
-    where: { slug, status: "PUBLISHED" },
-    include: {
-      tags: { include: { tag: true } },
-      members: {
-        include: {
-          person: {
-            include: { instruments: { include: { instrument: true } } },
+  const [project, upcomingGigs] = await Promise.all([
+    prisma.project.findUnique({
+      where: { slug, status: "PUBLISHED" },
+      include: {
+        tags: { include: { tag: true } },
+        members: {
+          include: {
+            person: {
+              include: { instruments: { include: { instrument: true } } },
+            },
           },
         },
+        residencies: {
+          where: { active: true },
+          include: { venue: { select: { name: true, slug: true } } },
+        },
       },
-      residencies: {
-        where: { active: true },
-        include: { venue: { select: { name: true, slug: true } } },
+    }),
+    prisma.gig.findMany({
+      where: {
+        status: "PUBLISHED",
+        datetime: { gte: new Date() },
+        lineup: { some: { project: { slug } } },
       },
-    },
-  })
+      orderBy: { datetime: "asc" },
+      select: {
+        slug: true,
+        title: true,
+        datetime: true,
+        price: true,
+        venue: { select: { name: true, slug: true, suburb: true } },
+        lineup: { select: { project: { select: { name: true, slug: true } } } },
+        tags: { select: { tag: { select: { name: true, label: true } } } },
+      },
+    }),
+  ])
 
   if (!project) notFound()
-
-  const upcomingGigs = await prisma.gig.findMany({
-    where: {
-      status: "PUBLISHED",
-      datetime: { gte: new Date() },
-      lineup: { some: { projectId: project.id } },
-    },
-    orderBy: { datetime: "asc" },
-    select: {
-      slug: true,
-      title: true,
-      datetime: true,
-      price: true,
-      venue: { select: { name: true, slug: true, suburb: true } },
-      lineup: { select: { project: { select: { name: true, slug: true } } } },
-      tags: { select: { tag: { select: { name: true, label: true } } } },
-    },
-  })
 
   const frequencyLabel: Record<string, string> = {
     WEEKLY: "Weekly",

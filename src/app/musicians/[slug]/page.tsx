@@ -6,46 +6,42 @@ import { notFound } from "next/navigation"
 export default async function MusicianPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
-  const person = await prisma.person.findUnique({
-    where: { slug },
-    include: {
-      instruments: { include: { instrument: true } },
-      tags: { include: { tag: true } },
-      projectMembers: {
-        include: {
-          project: {
-            select: { name: true, slug: true, bio: true, status: true },
+  const [person, upcomingGigs] = await Promise.all([
+    prisma.person.findUnique({
+      where: { slug },
+      include: {
+        instruments: { include: { instrument: true } },
+        tags: { include: { tag: true } },
+        projectMembers: {
+          include: {
+            project: {
+              select: { name: true, slug: true, bio: true, status: true },
+            },
           },
         },
       },
-    },
-  })
+    }),
+    // Filter gigs by person slug via nested relation — no ID dependency
+    prisma.gig.findMany({
+      where: {
+        status: "PUBLISHED",
+        datetime: { gte: new Date() },
+        lineup: { some: { project: { members: { some: { person: { slug } } } } } },
+      },
+      orderBy: { datetime: "asc" },
+      select: {
+        slug: true,
+        title: true,
+        datetime: true,
+        price: true,
+        venue: { select: { name: true, slug: true, suburb: true } },
+        lineup: { select: { project: { select: { name: true, slug: true } } } },
+        tags: { select: { tag: { select: { name: true, label: true } } } },
+      },
+    }),
+  ])
 
   if (!person) notFound()
-
-  const projectIds = person.projectMembers
-    .map(m => m.project?.slug ? m.project : null)
-    .filter(Boolean)
-    .map(p => p!.slug)
-
-  // Upcoming gigs via their projects
-  const upcomingGigs = await prisma.gig.findMany({
-    where: {
-      status: "PUBLISHED",
-      datetime: { gte: new Date() },
-      lineup: { some: { project: { slug: { in: projectIds } } } },
-    },
-    orderBy: { datetime: "asc" },
-    select: {
-      slug: true,
-      title: true,
-      datetime: true,
-      price: true,
-      venue: { select: { name: true, slug: true, suburb: true } },
-      lineup: { select: { project: { select: { name: true, slug: true } } } },
-      tags: { select: { tag: { select: { name: true, label: true } } } },
-    },
-  })
 
   const projects = person.projectMembers
     .map(m => m.project)
