@@ -122,7 +122,7 @@ export default async function HomePage() {
           alt="JAM"
           width={880}
           height={439}
-          className="h-28 w-auto max-w-full sm:h-36 md:h-44"
+          className="h-[54px] w-auto max-w-full sm:h-[69px] md:h-[85px]"
           priority
         />
         <p className="mt-3 text-zinc-500">
