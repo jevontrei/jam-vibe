@@ -486,6 +486,20 @@ model Organisation {
   @@map("organisations")
 }
 
+// ─── Site assets ──────────────────────────────────────────────────────────────
+// Editorial images stored in S3. Keyed by a stable identifier (e.g. "about-hero").
+
+model SiteAsset {
+  id        String   @id @default(cuid())
+  key       String   @unique // e.g. "about-hero"
+  s3Key     String // e.g. "images/about/hero.jpg"
+  altText   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("site_assets")
+}
+
 // ─── Saved items (Phase 2) ────────────────────────────────────────────────────
 // Schema included now; UI deferred to Phase 2.
 // Saving individual people is intentionally excluded.

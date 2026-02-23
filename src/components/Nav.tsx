@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 const links = [
   { href: "/gigs", label: "Gigs" },
@@ -17,7 +18,15 @@ const links = [
 
 export default function Nav() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const { data: session } = authClient.useSession();
+
+  async function handleSignOut() {
+    await authClient.signOut();
+    router.push("/");
+    router.refresh();
+  }
 
   const linkClass = (href: string) => {
     const active = pathname === href || pathname.startsWith(href + "/");
@@ -43,6 +52,21 @@ export default function Nav() {
               {label}
             </Link>
           ))}
+          {session ? (
+            <span className="flex items-center gap-3">
+              <span className="text-sm text-zinc-500">{session.user.name}</span>
+              <button
+                onClick={handleSignOut}
+                className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
+              >
+                Sign out
+              </button>
+            </span>
+          ) : (
+            <Link href="/sign-in" className={linkClass("/sign-in")}>
+              Sign in
+            </Link>
+          )}
         </nav>
 
         {/* Mobile hamburger */}
@@ -76,6 +100,25 @@ export default function Nav() {
               {label}
             </Link>
           ))}
+          {session ? (
+            <>
+              <span className="text-sm text-zinc-500">{session.user.name}</span>
+              <button
+                onClick={() => { setOpen(false); handleSignOut(); }}
+                className="text-left text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/sign-in"
+              className={linkClass("/sign-in")}
+              onClick={() => setOpen(false)}
+            >
+              Sign in
+            </Link>
+          )}
         </nav>
       )}
     </header>
