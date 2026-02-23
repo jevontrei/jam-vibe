@@ -34,7 +34,7 @@ const frequencyLabel: Record<string, string> = {
 export default async function HomePage() {
   const now = new Date();
 
-  const [tonightGigs, residencies, venues, projects, people, latestBlog] =
+  const [tonightGigs, residencies, venues, projects, musicians, latestBlog] =
     await Promise.all([
       // Tonight
       prisma.gig.findMany({
@@ -86,7 +86,7 @@ export default async function HomePage() {
           tags: { select: { tag: { select: { label: true } } }, take: 2 },
         },
       }),
-      // People
+      // Musicians
       prisma.person.findMany({
         orderBy: { name: "asc" },
         take: 8,
@@ -284,24 +284,24 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* People */}
+        {/* Musicians */}
         <section className="rounded-xl border border-zinc-200 p-5">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-violet-400">
-              People
+              Musicians
             </h2>
             <Link
-              href="/people"
+              href="/musicians"
               className="text-xs text-violet-400 hover:text-violet-600 transition-colors"
             >
-              All people →
+              All musicians →
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            {people.map((p) => (
+            {musicians.map((p) => (
               <Link
                 key={p.slug}
-                href={`/people/${p.slug}`}
+                href={`/musicians/${p.slug}`}
                 className="rounded-lg bg-violet-50 p-3 hover:bg-violet-100 transition-colors"
               >
                 <p className="font-medium text-sm text-zinc-900 truncate">

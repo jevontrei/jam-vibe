@@ -8,7 +8,7 @@ const links = [
   { href: "/gigs", label: "Gigs" },
   { href: "/venues", label: "Venues" },
   { href: "/projects", label: "Projects" },
-  { href: "/people", label: "People" },
+  { href: "/musicians", label: "Musicians" },
   { href: "/residencies", label: "Residencies" },
   { href: "/organisations", label: "Organisations" },
   { href: "/blogs", label: "Blogs" },

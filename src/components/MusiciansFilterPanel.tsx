@@ -2,19 +2,19 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 
-interface PeopleFilterPanelProps {
+interface MusiciansFilterPanelProps {
   instruments: string[]
   tags: { name: string; label: string }[]
   selectedInstruments: string[]
   selectedTags: string[]
 }
 
-export default function PeopleFilterPanel({
+export default function MusiciansFilterPanel({
   instruments,
   tags,
   selectedInstruments,
   selectedTags,
-}: PeopleFilterPanelProps) {
+}: MusiciansFilterPanelProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -29,11 +29,11 @@ export default function PeopleFilterPanel({
       params.append(type, value)
     }
 
-    router.push(`/people?${params.toString()}`)
+    router.push(`/musicians?${params.toString()}`)
   }
 
   function clearFilters() {
-    router.push("/people")
+    router.push("/musicians")
   }
 
   const hasFilters = selectedInstruments.length > 0 || selectedTags.length > 0

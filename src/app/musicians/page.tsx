@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { Suspense } from "react"
-import PeopleFilterPanel from "@/components/PeopleFilterPanel"
+import MusiciansFilterPanel from "@/components/MusiciansFilterPanel"
 
-export const metadata = { title: "People — JAM" }
+export const metadata = { title: "Musicians — JAM" }
 
-export default async function PeoplePage({
+export default async function MusiciansPage({
   searchParams,
 }: {
   searchParams: Promise<{ instrument?: string | string[]; tag?: string | string[] }>
@@ -21,7 +21,7 @@ export default async function PeoplePage({
     : []
   const selectedTags = Array.isArray(rawTags) ? rawTags : rawTags ? [rawTags] : []
 
-  const [allInstruments, allTags, people] = await Promise.all([
+  const [allInstruments, allTags, musicians] = await Promise.all([
     prisma.instrument.findMany({
       where: { people: { some: {} } },
       orderBy: { name: "asc" },
@@ -54,10 +54,10 @@ export default async function PeoplePage({
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8 md:py-12">
-      <h1 className="mb-8 text-2xl font-bold tracking-tight text-zinc-900">People</h1>
+      <h1 className="mb-8 text-2xl font-bold tracking-tight text-zinc-900">Musicians</h1>
 
       <Suspense>
-        <PeopleFilterPanel
+        <MusiciansFilterPanel
           instruments={allInstruments.map(i => i.name)}
           tags={allTags}
           selectedInstruments={selectedInstruments}
@@ -66,15 +66,15 @@ export default async function PeoplePage({
       </Suspense>
 
       <p className="mb-4 text-sm text-zinc-400">
-        {people.length} {people.length === 1 ? "person" : "people"}
+        {musicians.length} {musicians.length === 1 ? "musician" : "musicians"}
       </p>
 
-      {people.length > 0 ? (
+      {musicians.length > 0 ? (
         <div className="flex flex-col gap-3">
-          {people.map(person => (
+          {musicians.map(person => (
             <Link
               key={person.slug}
-              href={`/people/${person.slug}`}
+              href={`/musicians/${person.slug}`}
               className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 transition-colors"
             >
               <h2 className="font-semibold text-zinc-900">{person.name}</h2>
@@ -102,7 +102,7 @@ export default async function PeoplePage({
           ))}
         </div>
       ) : (
-        <p className="text-sm text-zinc-400">No people match the selected filters.</p>
+        <p className="text-sm text-zinc-400">No musicians match the selected filters.</p>
       )}
     </main>
   )

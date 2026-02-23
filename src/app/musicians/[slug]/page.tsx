@@ -3,7 +3,7 @@ import GigCard from "@/components/GigCard"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
-export default async function PersonPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function MusicianPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
   const person = await prisma.person.findUnique({
@@ -53,7 +53,7 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
-      <Link href="/people" className="text-sm text-violet-400 hover:text-violet-600">← People</Link>
+      <Link href="/musicians" className="text-sm text-violet-400 hover:text-violet-600">← Musicians</Link>
 
       <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900">{person.name}</h1>
 
