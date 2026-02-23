@@ -259,6 +259,202 @@ async function main() {
     create: { personId: joel.id, instrumentId: instrMap["bass"].id },
   });
 
+  const sam = await prisma.person.upsert({
+    where: { slug: "sam-okafor" },
+    update: {},
+    create: {
+      name: "Sam Okafor",
+      slug: "sam-okafor",
+      bio: "Drummer rooted in Afrobeat and funk. Holds down the pocket for multiple West End projects.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: sam.id, instrumentId: instrMap["drums"].id } },
+    update: {},
+    create: { personId: sam.id, instrumentId: instrMap["drums"].id },
+  });
+
+  const priya = await prisma.person.upsert({
+    where: { slug: "priya-sharma" },
+    update: {},
+    create: {
+      name: "Priya Sharma",
+      slug: "priya-sharma",
+      bio: "Pianist with a hard bop vocabulary and a soft spot for the Blue Note back catalogue.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: priya.id, instrumentId: instrMap["piano"].id } },
+    update: {},
+    create: { personId: priya.id, instrumentId: instrMap["piano"].id },
+  });
+
+  const cleo = await prisma.person.upsert({
+    where: { slug: "cleo-bassett" },
+    update: {},
+    create: {
+      name: "Cleo Bassett",
+      slug: "cleo-bassett",
+      bio: "Double bassist. BJC regular and first-call for trad sessions around town.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: cleo.id, instrumentId: instrMap["double bass"].id } },
+    update: {},
+    create: { personId: cleo.id, instrumentId: instrMap["double bass"].id },
+  });
+
+  const marcus = await prisma.person.upsert({
+    where: { slug: "marcus-webb" },
+    update: {},
+    create: {
+      name: "Marcus Webb",
+      slug: "marcus-webb",
+      bio: "Trumpeter. Hard bop is his language; Miles circa '64 is his north star.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: marcus.id, instrumentId: instrMap["trumpet"].id } },
+    update: {},
+    create: { personId: marcus.id, instrumentId: instrMap["trumpet"].id },
+  });
+
+  const yuki = await prisma.person.upsert({
+    where: { slug: "yuki-tanaka" },
+    update: {},
+    create: {
+      name: "Yuki Tanaka",
+      slug: "yuki-tanaka",
+      bio: "Violinist and flautist. Moves between jazz, contemporary classical, and free improvisation.",
+      createdById: admin.id,
+    },
+  });
+  for (const instr of ["violin", "flute"]) {
+    await prisma.personInstrument.upsert({
+      where: { personId_instrumentId: { personId: yuki.id, instrumentId: instrMap[instr].id } },
+      update: {},
+      create: { personId: yuki.id, instrumentId: instrMap[instr].id },
+    });
+  }
+
+  const dario = await prisma.person.upsert({
+    where: { slug: "dario-reyes" },
+    update: {},
+    create: {
+      name: "Dario Reyes",
+      slug: "dario-reyes",
+      bio: "Trombonist. Plays Latin and big band with equal commitment; co-leads El Ritmo.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: dario.id, instrumentId: instrMap["trombone"].id } },
+    update: {},
+    create: { personId: dario.id, instrumentId: instrMap["trombone"].id },
+  });
+
+  const sasha = await prisma.person.upsert({
+    where: { slug: "sasha-moir" },
+    update: {},
+    create: {
+      name: "Sasha Moir",
+      slug: "sasha-moir",
+      bio: "Free jazz drummer. If the pulse is uncomfortable, that's the point.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: sasha.id, instrumentId: instrMap["drums"].id } },
+    update: {},
+    create: { personId: sasha.id, instrumentId: instrMap["drums"].id },
+  });
+
+  const rowan = await prisma.person.upsert({
+    where: { slug: "rowan-kite" },
+    update: {},
+    create: {
+      name: "Rowan Kite",
+      slug: "rowan-kite",
+      bio: "Guitarist and bassist. Splits time between nu-jazz projects and funk gigs across the city.",
+      createdById: admin.id,
+    },
+  });
+  for (const instr of ["guitar", "bass"]) {
+    await prisma.personInstrument.upsert({
+      where: { personId_instrumentId: { personId: rowan.id, instrumentId: instrMap[instr].id } },
+      update: {},
+      create: { personId: rowan.id, instrumentId: instrMap[instr].id },
+    });
+  }
+
+  const harriet = await prisma.person.upsert({
+    where: { slug: "harriet-chu" },
+    update: {},
+    create: {
+      name: "Harriet Chu",
+      slug: "harriet-chu",
+      bio: "Saxophonist. Studied at JMI, now leading her own quartet through hard bop territory.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: harriet.id, instrumentId: instrMap["saxophone"].id } },
+    update: {},
+    create: { personId: harriet.id, instrumentId: instrMap["saxophone"].id },
+  });
+
+  const teo = await prisma.person.upsert({
+    where: { slug: "teo-ferraro" },
+    update: {},
+    create: {
+      name: "Teo Ferraro",
+      slug: "teo-ferraro",
+      bio: "Trumpeter with roots in Brazilian jazz and soul. A staple of the El Ritmo Fridays lineup.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: teo.id, instrumentId: instrMap["trumpet"].id } },
+    update: {},
+    create: { personId: teo.id, instrumentId: instrMap["trumpet"].id },
+  });
+
+  const bex = await prisma.person.upsert({
+    where: { slug: "bex-hollis" },
+    update: {},
+    create: {
+      name: "Bex Hollis",
+      slug: "bex-hollis",
+      bio: "Synth player. Works in the space between nu-jazz, ambient, and electroacoustic improvisation.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: bex.id, instrumentId: instrMap["synth"].id } },
+    update: {},
+    create: { personId: bex.id, instrumentId: instrMap["synth"].id },
+  });
+
+  const dom = await prisma.person.upsert({
+    where: { slug: "dom-cavalcanti" },
+    update: {},
+    create: {
+      name: "Dom Cavalcanti",
+      slug: "dom-cavalcanti",
+      bio: "Pianist. Raised on bossa nova, now playing Latin jazz and fusion around Meanjin.",
+      createdById: admin.id,
+    },
+  });
+  await prisma.personInstrument.upsert({
+    where: { personId_instrumentId: { personId: dom.id, instrumentId: instrMap["piano"].id } },
+    update: {},
+    create: { personId: dom.id, instrumentId: instrMap["piano"].id },
+  });
+
   // ── Projects ──────────────────────────────────────────────────────────────
   const rumblePack = await prisma.project.upsert({
     where: { slug: "rumble-pack" },
@@ -605,6 +801,32 @@ async function main() {
       { personId: joel.id, tagId: tagMap["improvised"].id },
       { personId: joel.id, tagId: tagMap["free-jazz"].id },
       { personId: joel.id, tagId: tagMap["experimental"].id },
+      { personId: sam.id, tagId: tagMap["afrobeat"].id },
+      { personId: sam.id, tagId: tagMap["funk"].id },
+      { personId: sam.id, tagId: tagMap["soul"].id },
+      { personId: priya.id, tagId: tagMap["hard-bop"].id },
+      { personId: priya.id, tagId: tagMap["standards"].id },
+      { personId: cleo.id, tagId: tagMap["trad-jazz"].id },
+      { personId: cleo.id, tagId: tagMap["standards"].id },
+      { personId: marcus.id, tagId: tagMap["hard-bop"].id },
+      { personId: marcus.id, tagId: tagMap["modern-jazz"].id },
+      { personId: yuki.id, tagId: tagMap["fusion"].id },
+      { personId: yuki.id, tagId: tagMap["experimental"].id },
+      { personId: yuki.id, tagId: tagMap["improvised"].id },
+      { personId: dario.id, tagId: tagMap["latin"].id },
+      { personId: dario.id, tagId: tagMap["big-band"].id },
+      { personId: sasha.id, tagId: tagMap["free-jazz"].id },
+      { personId: sasha.id, tagId: tagMap["improvised"].id },
+      { personId: rowan.id, tagId: tagMap["nu-jazz"].id },
+      { personId: rowan.id, tagId: tagMap["funk"].id },
+      { personId: harriet.id, tagId: tagMap["hard-bop"].id },
+      { personId: harriet.id, tagId: tagMap["modern-jazz"].id },
+      { personId: teo.id, tagId: tagMap["latin"].id },
+      { personId: teo.id, tagId: tagMap["soul"].id },
+      { personId: bex.id, tagId: tagMap["nu-jazz"].id },
+      { personId: bex.id, tagId: tagMap["experimental"].id },
+      { personId: dom.id, tagId: tagMap["latin"].id },
+      { personId: dom.id, tagId: tagMap["fusion"].id },
     ],
     skipDuplicates: true,
   });
