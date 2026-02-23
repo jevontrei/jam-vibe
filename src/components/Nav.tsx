@@ -62,11 +62,7 @@ export default function Nav() {
                 Sign out
               </button>
             </span>
-          ) : (
-            <Link href="/sign-in" className={linkClass("/sign-in")}>
-              Sign in
-            </Link>
-          )}
+          ) : null /* <Link href="/sign-in" className={linkClass("/sign-in")}>Sign in</Link> */}
         </nav>
 
         {/* Mobile hamburger */}
@@ -110,15 +106,7 @@ export default function Nav() {
                 Sign out
               </button>
             </>
-          ) : (
-            <Link
-              href="/sign-in"
-              className={linkClass("/sign-in")}
-              onClick={() => setOpen(false)}
-            >
-              Sign in
-            </Link>
-          )}
+          ) : null /* <Link href="/sign-in" className={linkClass("/sign-in")} onClick={() => setOpen(false)}>Sign in</Link> */}
         </nav>
       )}
     </header>
