@@ -509,6 +509,16 @@ async function main() {
       createdById: admin.id,
     },
   });
+  for (const personId of [
+    liv.id, jordy.id, joel.id, yuki.id, dario.id, sasha.id,
+    marcus.id, harriet.id, cleo.id, bex.id,
+  ]) {
+    await prisma.projectMember.upsert({
+      where: { projectId_personId: { projectId: obscureOrch.id, personId } },
+      update: {},
+      create: { projectId: obscureOrch.id, personId },
+    });
+  }
 
   const liveAtLivs = await prisma.project.upsert({
     where: { slug: "live-at-livs" },
@@ -526,6 +536,78 @@ async function main() {
       where: { projectId_personId: { projectId: liveAtLivs.id, personId } },
       update: {},
       create: { projectId: liveAtLivs.id, personId },
+    });
+  }
+
+  const elRitmoProject = await prisma.project.upsert({
+    where: { slug: "el-ritmo" },
+    update: {},
+    create: {
+      name: "El Ritmo",
+      slug: "el-ritmo",
+      bio: "Latin jazz collective co-led by Dario Reyes and Teo Ferraro. Friday nights are their domain.",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+  for (const { personId, role } of [
+    { personId: dario.id, role: "co-leader" },
+    { personId: teo.id, role: "co-leader" },
+    { personId: dom.id, role: null },
+    { personId: sam.id, role: null },
+    { personId: rowan.id, role: null },
+  ]) {
+    await prisma.projectMember.upsert({
+      where: { projectId_personId: { projectId: elRitmoProject.id, personId } },
+      update: {},
+      create: { projectId: elRitmoProject.id, personId, role },
+    });
+  }
+
+  const harrietQuartet = await prisma.project.upsert({
+    where: { slug: "harriet-chu-quartet" },
+    update: {},
+    create: {
+      name: "Harriet Chu Quartet",
+      slug: "harriet-chu-quartet",
+      bio: "Hard bop from Harriet Chu — Blue Note-era vocabulary with a Brisbane accent.",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+  for (const { personId, role } of [
+    { personId: harriet.id, role: "leader" },
+    { personId: priya.id, role: null },
+    { personId: cleo.id, role: null },
+    { personId: marcus.id, role: null },
+  ]) {
+    await prisma.projectMember.upsert({
+      where: { projectId_personId: { projectId: harrietQuartet.id, personId } },
+      update: {},
+      create: { projectId: harrietQuartet.id, personId, role },
+    });
+  }
+
+  const nightSignal = await prisma.project.upsert({
+    where: { slug: "night-signal" },
+    update: {},
+    create: {
+      name: "Night Signal",
+      slug: "night-signal",
+      bio: "Nu-jazz trio built on synth textures, electric guitar, and heavy grooves.",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+  for (const { personId, role } of [
+    { personId: rowan.id, role: "leader" },
+    { personId: bex.id, role: null },
+    { personId: sam.id, role: null },
+  ]) {
+    await prisma.projectMember.upsert({
+      where: { projectId_personId: { projectId: nightSignal.id, personId } },
+      update: {},
+      create: { projectId: nightSignal.id, personId, role },
     });
   }
 
@@ -782,6 +864,17 @@ async function main() {
       { projectId: liveAtLivs.id, tagId: tagMap["modern-jazz"].id },
       { projectId: liveAtLivs.id, tagId: tagMap["free-entry"].id },
       { projectId: liveAtLivs.id, tagId: tagMap["late-night"].id },
+      { projectId: elRitmoProject.id, tagId: tagMap["latin"].id },
+      { projectId: elRitmoProject.id, tagId: tagMap["funk"].id },
+      { projectId: elRitmoProject.id, tagId: tagMap["soul"].id },
+      { projectId: elRitmoProject.id, tagId: tagMap["late-night"].id },
+      { projectId: harrietQuartet.id, tagId: tagMap["hard-bop"].id },
+      { projectId: harrietQuartet.id, tagId: tagMap["modern-jazz"].id },
+      { projectId: harrietQuartet.id, tagId: tagMap["standards"].id },
+      { projectId: harrietQuartet.id, tagId: tagMap["instrumental"].id },
+      { projectId: nightSignal.id, tagId: tagMap["nu-jazz"].id },
+      { projectId: nightSignal.id, tagId: tagMap["experimental"].id },
+      { projectId: nightSignal.id, tagId: tagMap["fusion"].id },
     ],
     skipDuplicates: true,
   });
@@ -982,6 +1075,7 @@ async function main() {
       frequency: Frequency.WEEKLY,
       startTime: "21:00",
       active: true,
+      projectId: elRitmoProject.id,
       createdById: admin.id,
     },
   });

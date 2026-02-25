@@ -132,7 +132,7 @@ export default async function ProjectPage({
                   className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5"
                 >
                   <Link
-                    href={`/people/${person.slug}`}
+                    href={`/musicians/${person.slug}`}
                     className="font-medium text-zinc-900 hover:underline"
                   >
                     {person.name}
