@@ -6,14 +6,12 @@ import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 
 const links = [
-  { href: "/gigs", label: "Gigs" },
-  { href: "/venues", label: "Venues" },
-  { href: "/projects", label: "Projects" },
-  { href: "/musicians", label: "Musicians" },
-  { href: "/residencies", label: "Residencies" },
+  { href: "/organisations", label: "Organisations" },
+  { href: "/blogs", label: "Blogs" },
+  { href: "/about", label: "About" },
 ];
 
-export default function Nav() {
+export default function Footer() {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -31,17 +29,8 @@ export default function Nav() {
   };
 
   return (
-    <header className="border-b border-violet-100 bg-white">
+    <footer className="p-8 border-b border-violet-100 bg-white">
       <div className="mx-auto flex max-w-2xl items-center justify-center px-4 py-3">
-        {/* Logo */}
-        <Link
-          href="/"
-          className="mr-8 font-bold text-zinc-900"
-          onClick={() => setOpen(false)}
-        >
-          JAM
-        </Link>
-
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-6">
           {links.map(({ href, label }) => (
@@ -117,6 +106,6 @@ export default function Nav() {
           }
         </nav>
       )}
-    </header>
+    </footer>
   );
 }
