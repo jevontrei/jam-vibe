@@ -112,7 +112,7 @@ async function main() {
   // ── Venues ────────────────────────────────────────────────────────────────
   const triffid = await prisma.venue.upsert({
     where: { slug: "the-triffid" },
-    update: {},
+    update: { lat: -27.4540, lng: 153.0449 },
     create: {
       name: "The Triffid",
       slug: "the-triffid",
@@ -130,7 +130,7 @@ async function main() {
 
   const mirrorball = await prisma.venue.upsert({
     where: { slug: "mirrorball-ministries" },
-    update: {},
+    update: { lat: -27.4574, lng: 153.0340 },
     create: {
       name: "Mirrorball Ministries",
       slug: "mirrorball-ministries",
@@ -147,7 +147,7 @@ async function main() {
 
   const bjc = await prisma.venue.upsert({
     where: { slug: "brisbane-jazz-club" },
-    update: {},
+    update: { lat: -27.4722, lng: 153.0355 },
     create: {
       name: "Brisbane Jazz Club",
       slug: "brisbane-jazz-club",
@@ -165,7 +165,7 @@ async function main() {
 
   const joynt = await prisma.venue.upsert({
     where: { slug: "the-joynt" },
-    update: {},
+    update: { lat: -27.4824, lng: 152.9990 },
     create: {
       name: "The Joynt",
       slug: "the-joynt",
@@ -981,7 +981,7 @@ async function main() {
   // ── Extra venues ──────────────────────────────────────────────────────────
   const burrow = await prisma.venue.upsert({
     where: { slug: "the-burrow" },
-    update: {},
+    update: { lat: -27.4834, lng: 152.9978 },
     create: {
       name: "The Burrow",
       slug: "the-burrow",
@@ -996,7 +996,7 @@ async function main() {
 
   const emporium = await prisma.venue.upsert({
     where: { slug: "emporium-hotel" },
-    update: {},
+    update: { lat: -27.4568, lng: 153.0415 },
     create: {
       name: "Emporium Hotel",
       slug: "emporium-hotel",
@@ -1011,7 +1011,7 @@ async function main() {
 
   const hyatt = await prisma.venue.upsert({
     where: { slug: "hyatt-regency-brisbane" },
-    update: {},
+    update: { lat: -27.4714, lng: 153.0236 },
     create: {
       name: "Hyatt Regency Brisbane",
       slug: "hyatt-regency-brisbane",
@@ -1026,7 +1026,7 @@ async function main() {
 
   const jmiVenue = await prisma.venue.upsert({
     where: { slug: "jazz-music-institute" },
-    update: {},
+    update: { lat: -27.4820, lng: 153.0168 },
     create: {
       name: "Jazz Music Institute",
       slug: "jazz-music-institute",
@@ -1041,7 +1041,7 @@ async function main() {
 
   const deathAndCo = await prisma.venue.upsert({
     where: { slug: "death-and-co" },
-    update: {},
+    update: { lat: -27.4565, lng: 153.0347 },
     create: {
       name: "Death & Co",
       slug: "death-and-co",
@@ -1056,7 +1056,7 @@ async function main() {
 
   const alligator = await prisma.venue.upsert({
     where: { slug: "alligator-club" },
-    update: {},
+    update: { lat: -27.4616, lng: 153.0467 },
     create: {
       name: "Alligator Club",
       slug: "alligator-club",
