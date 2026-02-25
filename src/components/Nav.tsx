@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { Search } from "lucide-react";
 
 const links = [
   { href: "/gigs", label: "Gigs" },
@@ -49,6 +50,9 @@ export default function Nav() {
               {label}
             </Link>
           ))}
+          <Link href="/search" className={linkClass("/search")} aria-label="Search">
+            <Search size={16} aria-hidden="true" />
+          </Link>
           {
             session ? (
               <span className="flex items-center gap-3">
@@ -97,6 +101,9 @@ export default function Nav() {
               {label}
             </Link>
           ))}
+          <Link href="/search" className={linkClass("/search")} onClick={() => setOpen(false)}>
+            Search
+          </Link>
           {
             session ? (
               <>
