@@ -229,6 +229,8 @@ model Venue {
   slug        String        @unique
   address     String
   suburb      String?
+  lat         Float?
+  lng         Float?
   description String?
   image       String?
   links       Json?

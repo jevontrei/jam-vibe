@@ -1,5 +1,8 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import dynamic from "next/dynamic"
+
+const VenueMap = dynamic(() => import("@/components/VenueMap"), { ssr: false })
 
 export const metadata = { title: "Venues — JAM" }
 
@@ -11,15 +14,27 @@ export default async function VenuesPage() {
       slug: true,
       name: true,
       suburb: true,
+      lat: true,
+      lng: true,
       description: true,
       tags: { select: { tag: { select: { name: true, label: true } } } },
       _count: { select: { gigs: { where: { status: "PUBLISHED", datetime: { gte: new Date() } } } } },
     },
   })
 
+  const mappableVenues = venues.filter(v => v.lat != null && v.lng != null) as Array<
+    (typeof venues)[number] & { lat: number; lng: number }
+  >
+
   return (
     <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
-      <h1 className="mb-8 text-2xl font-bold tracking-tight text-zinc-900">Venues</h1>
+      <h1 className="mb-6 text-2xl font-bold tracking-tight text-zinc-900">Venues</h1>
+
+      {mappableVenues.length > 0 && (
+        <div className="mb-8 aspect-square w-full overflow-hidden rounded-lg border border-zinc-200">
+          <VenueMap venues={mappableVenues} />
+        </div>
+      )}
 
       {venues.length > 0 ? (
         <div className="flex flex-col gap-3">
