@@ -1,8 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
-import dynamic from "next/dynamic"
-
-const VenueMap = dynamic(() => import("@/components/VenueMap"), { ssr: false })
+import VenueMapWrapper from "@/components/VenueMapWrapper"
 
 export const metadata = { title: "Venues — JAM" }
 
@@ -32,7 +30,7 @@ export default async function VenuesPage() {
 
       {mappableVenues.length > 0 && (
         <div className="mb-8 aspect-square w-full overflow-hidden rounded-lg border border-zinc-200">
-          <VenueMap venues={mappableVenues} />
+          <VenueMapWrapper venues={mappableVenues} />
         </div>
       )}
 
