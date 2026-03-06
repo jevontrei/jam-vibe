@@ -15,19 +15,6 @@ export default async function AboutPage() {
         About
       </h1>
 
-      {hero && (
-        <div className="mb-8 overflow-hidden rounded-lg">
-          <Image
-            src={getImageUrl(hero.s3Key)}
-            alt={hero.altText ?? "JAM — Jazz Almanac Meanjin"}
-            width={800}
-            height={500}
-            className="w-full object-cover"
-            priority
-          />
-        </div>
-      )}
-
       <div className="flex flex-col gap-4 leading-relaxed text-zinc-700">
         <p>
           JAM is a community project, born in conversation between a couple of
@@ -35,6 +22,19 @@ export default async function AboutPage() {
           related music in Brisbane/Meanjin — free to use, free to contribute,
           and run by the people on the ground.
         </p>
+
+        {hero && (
+          <div className="mb-4 overflow-hidden rounded-lg">
+            <Image
+              src={getImageUrl(hero.s3Key)}
+              alt={hero.altText ?? "JAM — Jazz Almanac Meanjin"}
+              width={800}
+              height={500}
+              className="w-full object-cover"
+              priority
+            />
+          </div>
+        )}
         <p>
           We list gigs, venues, artists, residencies, and organisations. Anyone
           can submit content; a small editorial team keeps things tidy. No

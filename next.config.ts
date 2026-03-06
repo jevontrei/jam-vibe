@@ -5,8 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        // TODO: change this to australia
-        hostname: "jam-public-photos-bucket.s3.us-east-1.amazonaws.com",
+        hostname: "jam-public-stuff.s3.ap-southeast-2.amazonaws.com",
         pathname: "/**",
       },
     ],
