@@ -240,8 +240,8 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Projects */}
-        <section className="rounded-xl border border-zinc-200 p-5">
+        {/* Projects — full width */}
+        <section className="rounded-xl border border-zinc-200 p-5 md:col-span-2">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-violet-400">
               Projects
