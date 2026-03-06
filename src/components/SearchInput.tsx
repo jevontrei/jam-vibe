@@ -24,7 +24,7 @@ export default function SearchInput({ defaultValue = "" }: { defaultValue?: stri
         type="search"
         value={value}
         onChange={e => setValue(e.target.value)}
-        placeholder="Search musicians, venues, projects…"
+        placeholder="Search venues, projects, gigs…"
         className="flex-1 rounded-lg border border-zinc-300 px-4 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-100"
       />
       <button

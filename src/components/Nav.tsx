@@ -10,7 +10,6 @@ const links = [
   { href: "/gigs", label: "Gigs" },
   { href: "/venues", label: "Venues" },
   { href: "/projects", label: "Projects" },
-  { href: "/musicians", label: "Musicians" },
   { href: "/residencies", label: "Residencies" },
 ];
 
@@ -50,7 +49,11 @@ export default function Nav() {
               {label}
             </Link>
           ))}
-          <Link href="/search" className={linkClass("/search")} aria-label="Search">
+          <Link
+            href="/search"
+            className={linkClass("/search")}
+            aria-label="Search"
+          >
             <Search size={16} aria-hidden="true" />
           </Link>
           {
@@ -101,7 +104,11 @@ export default function Nav() {
               {label}
             </Link>
           ))}
-          <Link href="/search" className={linkClass("/search")} onClick={() => setOpen(false)}>
+          <Link
+            href="/search"
+            className={linkClass("/search")}
+            onClick={() => setOpen(false)}
+          >
             Search
           </Link>
           {

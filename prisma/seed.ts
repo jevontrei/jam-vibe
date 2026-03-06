@@ -355,7 +355,7 @@ async function main() {
     create: {
       name: "Dario Reyes",
       slug: "dario-reyes",
-      bio: "Trombonist. Plays Latin and big band with equal commitment; co-leads El Ritmo.",
+      bio: "Trombonist. Plays Latin and big band with equal commitment; a regular at El Ritmo.",
       createdById: admin.id,
     },
   });
@@ -421,7 +421,7 @@ async function main() {
     create: {
       name: "Teo Ferraro",
       slug: "teo-ferraro",
-      bio: "Trumpeter with roots in Brazilian jazz and soul. A staple of the El Ritmo Fridays lineup.",
+      bio: "Trumpeter with roots in Brazilian jazz and soul. A regular at El Ritmo on Friday nights.",
       createdById: admin.id,
     },
   });
@@ -547,30 +547,6 @@ async function main() {
     });
   }
 
-  const elRitmoProject = await prisma.project.upsert({
-    where: { slug: "el-ritmo" },
-    update: {},
-    create: {
-      name: "El Ritmo",
-      slug: "el-ritmo",
-      bio: "Latin jazz collective co-led by Dario Reyes and Teo Ferraro. Friday nights are their domain.",
-      status: ContentStatus.PUBLISHED,
-      createdById: admin.id,
-    },
-  });
-  for (const { personId, role } of [
-    { personId: dario.id, role: "co-leader" },
-    { personId: teo.id, role: "co-leader" },
-    { personId: dom.id, role: null },
-    { personId: sam.id, role: null },
-    { personId: rowan.id, role: null },
-  ]) {
-    await prisma.projectMember.upsert({
-      where: { projectId_personId: { projectId: elRitmoProject.id, personId } },
-      update: {},
-      create: { projectId: elRitmoProject.id, personId, role },
-    });
-  }
 
   const harrietQuartet = await prisma.project.upsert({
     where: { slug: "harriet-chu-quartet" },
@@ -872,10 +848,6 @@ async function main() {
       { projectId: liveAtLivs.id, tagId: tagMap["modern-jazz"].id },
       { projectId: liveAtLivs.id, tagId: tagMap["free-entry"].id },
       { projectId: liveAtLivs.id, tagId: tagMap["late-night"].id },
-      { projectId: elRitmoProject.id, tagId: tagMap["latin"].id },
-      { projectId: elRitmoProject.id, tagId: tagMap["funk"].id },
-      { projectId: elRitmoProject.id, tagId: tagMap["soul"].id },
-      { projectId: elRitmoProject.id, tagId: tagMap["late-night"].id },
       { projectId: harrietQuartet.id, tagId: tagMap["hard-bop"].id },
       { projectId: harrietQuartet.id, tagId: tagMap["modern-jazz"].id },
       { projectId: harrietQuartet.id, tagId: tagMap["standards"].id },
@@ -1069,6 +1041,18 @@ async function main() {
     },
   });
 
+  const elRitmoVenue = await prisma.venue.upsert({
+    where: { slug: "el-ritmo" },
+    update: {},
+    create: {
+      name: "El Ritmo",
+      slug: "el-ritmo",
+      suburb: "Fortitude Valley",
+      status: ContentStatus.PUBLISHED,
+      createdById: admin.id,
+    },
+  });
+
   // ── Extra residencies ──────────────────────────────────────────────────────
   const cutTime = await prisma.residency.upsert({
     where: { slug: "cut-time-burrow" },
@@ -1095,7 +1079,7 @@ async function main() {
       frequency: Frequency.WEEKLY,
       startTime: "21:00",
       active: true,
-      projectId: elRitmoProject.id,
+      venueId: elRitmoVenue.id,
       createdById: admin.id,
     },
   });

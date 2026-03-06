@@ -34,7 +34,7 @@ const frequencyLabel: Record<string, string> = {
 export default async function HomePage() {
   const now = new Date();
 
-  const [tonightGigs, residencies, venues, projects, musicians, latestBlog] =
+  const [tonightGigs, residencies, venues, projects, latestBlog] =
     await Promise.all([
       // Tonight
       prisma.gig.findMany({
@@ -84,19 +84,6 @@ export default async function HomePage() {
           name: true,
           members: { select: { person: { select: { name: true } } } },
           tags: { select: { tag: { select: { label: true } } }, take: 2 },
-        },
-      }),
-      // Musicians
-      prisma.person.findMany({
-        orderBy: { name: "asc" },
-        take: 8,
-        select: {
-          slug: true,
-          name: true,
-          instruments: {
-            select: { instrument: { select: { name: true } } },
-            take: 2,
-          },
         },
       }),
       // Latest blog
@@ -277,39 +264,6 @@ export default async function HomePage() {
                 {p.members.length > 0 && (
                   <p className="text-xs text-zinc-500 truncate">
                     {p.members.map((m) => m.person.name).join(", ")}
-                  </p>
-                )}
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {/* Musicians */}
-        <section className="rounded-xl border border-zinc-200 p-5">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-violet-400">
-              Musicians
-            </h2>
-            <Link
-              href="/musicians"
-              className="text-xs text-violet-400 hover:text-violet-600 transition-colors"
-            >
-              All musicians →
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {musicians.map((p) => (
-              <Link
-                key={p.slug}
-                href={`/musicians/${p.slug}`}
-                className="rounded-lg bg-violet-50 p-3 hover:bg-violet-100 transition-colors"
-              >
-                <p className="font-medium text-sm text-zinc-900 truncate">
-                  {p.name}
-                </p>
-                {p.instruments.length > 0 && (
-                  <p className="text-xs text-zinc-500 truncate">
-                    {p.instruments.map((i) => i.instrument.name).join(", ")}
                   </p>
                 )}
               </Link>

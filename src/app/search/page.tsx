@@ -51,7 +51,7 @@ export default async function SearchPage({
       <main className="mx-auto max-w-2xl px-4 py-8 md:py-12">
         <h1 className="mb-6 text-2xl font-bold tracking-tight text-zinc-900">Search</h1>
         <SearchInput />
-        <p className="mt-6 text-sm text-zinc-400">Search across musicians, projects, venues, gigs, and residencies.</p>
+        <p className="mt-6 text-sm text-zinc-400">Search across projects, venues, gigs, and residencies.</p>
       </main>
     )
   }
@@ -60,18 +60,7 @@ export default async function SearchPage({
   const tagMatch = { tags: { some: { tag: { label: ci } } } }
   const tagSelect = { select: { tag: { select: { name: true, label: true } } } }
 
-  const [musicians, projects, venues, gigs, residencies] = await Promise.all([
-    prisma.person.findMany({
-      where: { OR: [{ name: ci }, { bio: ci }, tagMatch] },
-      orderBy: { name: "asc" },
-      select: {
-        slug: true,
-        name: true,
-        instruments: { select: { instrument: { select: { name: true } } } },
-        tags: tagSelect,
-      },
-    }),
-
+  const [projects, venues, gigs, residencies] = await Promise.all([
     prisma.project.findMany({
       where: { status: "PUBLISHED", OR: [{ name: ci }, { bio: ci }, tagMatch] },
       orderBy: { name: "asc" },
@@ -121,7 +110,6 @@ export default async function SearchPage({
   ])
 
   const hasResults =
-    musicians.length > 0 ||
     projects.length > 0 ||
     venues.length > 0 ||
     gigs.length > 0 ||
@@ -142,29 +130,6 @@ export default async function SearchPage({
       )}
 
       <div className="flex flex-col gap-10">
-        {musicians.length > 0 && (
-          <section>
-            <SectionHeading label="Musicians" count={musicians.length} />
-            <div className="flex flex-col gap-3">
-              {musicians.map(p => (
-                <Link
-                  key={p.slug}
-                  href={`/musicians/${p.slug}`}
-                  className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 transition-colors"
-                >
-                  <p className="font-medium text-zinc-900">{p.name}</p>
-                  {p.instruments.length > 0 && (
-                    <p className="text-sm text-zinc-500">
-                      {p.instruments.map(i => i.instrument.name).join(", ")}
-                    </p>
-                  )}
-                  <TagPills tags={p.tags} />
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
         {projects.length > 0 && (
           <section>
             <SectionHeading label="Projects" count={projects.length} />

@@ -131,12 +131,9 @@ export default async function ProjectPage({
                   key={person.slug}
                   className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5"
                 >
-                  <Link
-                    href={`/musicians/${person.slug}`}
-                    className="font-medium text-zinc-900 hover:underline"
-                  >
+                  <span className="font-medium text-zinc-900">
                     {person.name}
-                  </Link>
+                  </span>
                   {(instrs || role) && (
                     <span className="text-sm text-zinc-500">
                       {[instrs, role].filter(Boolean).join(" · ")}
