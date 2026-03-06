@@ -1047,6 +1047,7 @@ async function main() {
     create: {
       name: "El Ritmo",
       slug: "el-ritmo",
+      address: "29 Warner St, Fortitude Valley",
       suburb: "Fortitude Valley",
       status: ContentStatus.PUBLISHED,
       createdById: admin.id,
