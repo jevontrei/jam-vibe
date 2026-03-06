@@ -64,13 +64,14 @@ export default async function AboutPage() {
 
         <h2 className="mt-6 text-lg font-semibold text-zinc-900">Contact</h2>
         <p>
-          Reach us at{" "}
+          Want your residency listed, or have feedback?{" "}
           <a
-            href="mailto:hello@jam.meanjin"
+            href="/contact"
             className="underline hover:text-zinc-900"
           >
-            hello@jam.meanjin
+            Get in touch
           </a>
+          .
         </p>
       </div>
     </main>

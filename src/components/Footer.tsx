@@ -8,6 +8,7 @@ const links = [
   { href: "/organisations", label: "Organisations" },
   { href: "/blogs", label: "Blogs" },
   { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Footer() {
